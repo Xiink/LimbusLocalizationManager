@@ -1,0 +1,49 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.container {
+  @apply 
+    px-2 py-1 rounded-md text-limbus-50 bg-background min-h-8 h-8
+    border border-limbus-500
+    text-limbus-500
+    mb-2
+  ;
+}
+
+.container :global(.Toastify__close-button),
+.container :global(.Toastify__toast-icon) {
+  @apply hidden;
+}
+
+.toast {
+  @apply w-full flex items-center justify-between;
+}
+
+.toast h1 {
+  @apply text-nowrap truncate;
+}
+
+.error {
+  @apply !text-danger !border-danger;
+}
+
+.toast button {
+  @apply text-limbus-500;
+}
+
+.toast button:hover {
+  @apply text-limbus-500;
+}
+
+.toast button:hover {
+  filter: drop-shadow(0 0 2px var(--color-limbus-300));
+  transition: filter .3s ease;
+}
+
+.toast button:hover svg {
+  @apply text-limbus-300 transition-colors duration-300;
+}
+
+.toast button:active svg {
+  @apply text-limbus-100 transition-colors duration-300;
+}

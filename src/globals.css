@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Lora';
+  src: url('./assets/fonts/Lora/Lora-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('./assets/fonts/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme {
+  --color-limbus-50: #fbf8eb;
+  --color-limbus-100: #f7edca;
+  --color-limbus-200: #f0da98;
+  --color-limbus-300: #e8bd5c;
+  --color-limbus-400: #dfa330;
+  --color-limbus-500: #cf8d23;
+  --color-limbus-600: #b36d1b;
+  --color-limbus-700: #94511a;
+  --color-limbus-800: #773f1c;
+  --color-limbus-900: #66361d;
+  --color-limbus-950: #3b1b0d;
+
+  --color-background: #231c20;
+
+  --color-danger:rgb(207, 55, 35);
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+body {
+  font-family: 'Lora', serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  @apply min-h-0 min-w-0;
+}

@@ -1,0 +1,14 @@
+{
+  "installed": {},
+  
+  "sources": {
+    "default": {
+      "name": "Default",
+      "url": "https://example.com/mirrors/limbus-localizer"
+    }
+  },
+
+  "selected_source": "default",
+  "game_directory": null,
+  "language": null
+}

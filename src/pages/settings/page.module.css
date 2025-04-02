@@ -1,0 +1,18 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.container {
+  @apply flex flex-col gap-2;
+}
+
+.select {
+  @apply relative border-1 border-limbus-600/30 rounded-sm text-limbus-500 w-36;
+}
+
+.select select {
+  @apply appearance-none outline-none p-1 pr-6 w-full;
+}
+
+.select svg {
+  @apply absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none;
+}

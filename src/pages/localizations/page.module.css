@@ -1,0 +1,82 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.loading {
+  @apply flex flex-col items-center justify-center flex-1;
+}
+
+.loading p {
+  @apply text-limbus-300 text-lg;
+}
+
+.loading p::after {
+  content: "";
+  display: inline-block;
+  animation: loading steps(1, end) 0.5s infinite;
+}
+
+@keyframes loading {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+  100% { content: ''; }
+}
+
+.error {
+  @apply flex flex-col items-center justify-center flex-1;
+}
+
+.error span {
+  @apply text-lg text-limbus-300;
+}
+
+.error div {
+  @apply flex gap-2 items-center justify-center text-limbus-500;
+}
+
+.error div a:hover {
+  @apply text-limbus-400 transition-colors duration-300;
+}
+
+.container {
+  @apply flex flex-row flex-1 gap-4;
+}
+
+.list {
+  @apply flex flex-col max-w-32 pr-2 shrink-0 overflow-y-scroll border-r border-limbus-600/30; 
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+.item {
+  @apply flex gap-2 items-center p-1;
+}
+
+.item:first-child {
+  @apply pt-0;
+}
+
+.item span {
+  @apply truncate;
+}
+
+.item:last-child {
+  @apply pb-0;
+}
+
+.item:not(:last-child) {
+  @apply border-b border-limbus-600/30;
+}
+
+.item img {
+  @apply w-6 h-4 rounded-sm opacity-60;
+}
+
+.content {
+  @apply w-full h-full overflow-hidden;
+}

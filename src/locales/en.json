@@ -1,0 +1,22 @@
+{
+  "title": "Limbus Launcher",
+  "settings": {
+    "interfaceLanguage": "Interface language",
+    "source": "Source",
+    "title": "Settings"
+  },
+  "localization": {
+    "authors": "Authors",
+    "select": "Select a localization",
+    "notFound": "Localization not found",
+    "uninstall": "Uninstall",
+    "repair": "Repair",
+    "add": "Add",
+    "installed": "Localization {{localization}} {{version}} installed",
+    "uninstalled": "Localization {{localization}} uninstalled",
+    "repaired": "Repaired localization {{localization}}"
+  },
+  "error": {
+    "install": "Failed to install localization {{localization}}"
+  }
+}

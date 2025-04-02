@@ -1,0 +1,63 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.container {
+  @apply flex flex-col flex-1 py-1 overflow-x-hidden gap-2 max-h-full;
+}
+
+.header {
+  @apply flex items-center gap-2 w-full shrink-0;
+}
+
+.header img {
+  @apply w-10 h-10 rounded-sm shrink-0;
+}
+
+.info {
+  @apply flex flex-col justify-center w-full overflow-hidden min-w-0;
+}
+
+.info h1 {
+  @apply font-bold;
+}
+
+.info span {
+  @apply text-xs text-limbus-500 overflow-x-auto text-nowrap shrink-1 min-w-0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.info span::-webkit-scrollbar {
+  @apply hidden;
+}
+
+.description {
+  @apply break-all h-full overflow-y-scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.description::-webkit-scrollbar {
+  @apply hidden;
+}
+
+.description h1 {
+  @apply text-lg font-bold;
+}
+
+.description h2 {
+  @apply text-base font-bold;
+}
+
+.description ul {
+  @apply list-disc list-inside;
+}
+
+.description ol {
+  @apply list-decimal list-inside;
+}
+
+.description p {
+  @apply mb-2;
+}
+
