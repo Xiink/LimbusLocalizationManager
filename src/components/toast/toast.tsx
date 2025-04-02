@@ -7,7 +7,9 @@ function Toast({ closeToast, toastProps }: ToastContentProps) {
   const data = toastProps.data as { message: string };
 
   return (
-    <div className={cn(styles.toast, toastProps.type === "error" && styles.error)}>
+    <div
+      className={cn(styles.toast, toastProps.type === "error" && styles.error)}
+    >
       <h1>{data.message}</h1>
       <button onClick={closeToast}>
         <X className="w-4 h-4" />
@@ -43,4 +45,4 @@ export function toastInfo(message: string) {
       message,
     },
   });
-} 
+}

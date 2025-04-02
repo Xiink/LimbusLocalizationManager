@@ -14,10 +14,7 @@ function MainLayout() {
           <Outlet />
         </div>
       </div>
-      <ToastContainer 
-        position="bottom-right" 
-        hideProgressBar
-      />
+      <ToastContainer position="bottom-right" hideProgressBar />
     </div>
   );
 }

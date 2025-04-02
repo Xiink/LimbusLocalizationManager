@@ -17,7 +17,7 @@ export interface AvailableLocalizations {
 
 export const Format = {
   Compatible: "compatible",
-  New: "new"
+  New: "new",
 } as const;
 
 export type Format = (typeof Format)[keyof typeof Format];

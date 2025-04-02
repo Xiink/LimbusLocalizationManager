@@ -6,10 +6,7 @@ import { Home, Info, Settings, Map } from "lucide-react";
 function Navbar() {
   return (
     <nav className={styles.container}>
-      <NavLink 
-        to="/"
-        className={getLinkClassName}
-      >
+      <NavLink to="/" className={getLinkClassName}>
         <Home className="w-8 h-8" />
       </NavLink>
       <NavLink to="/localizations" className={getLinkClassName}>
@@ -24,9 +21,15 @@ function Navbar() {
     </nav>
   );
 
-  function getLinkClassName({ isActive, isPending }: { isActive: boolean, isPending: boolean }) {
+  function getLinkClassName({
+    isActive,
+    isPending,
+  }: {
+    isActive: boolean;
+    isPending: boolean;
+  }) {
     return cn(
-      styles.link, 
+      styles.link,
       isPending ? styles.pending : isActive ? styles.active : ""
     );
   }

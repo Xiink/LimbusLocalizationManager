@@ -22,17 +22,22 @@ function Page() {
           <option value="fr">French</option>
           <option value="it">Italian</option>
         </select>
-        <ArrowDown strokeWidth={1.5}/>
+        <ArrowDown strokeWidth={1.5} />
       </div>
 
       <h2>{t("settings.source")}</h2>
       <div className={styles.select}>
-        <select value={settings.selectedSource ?? undefined} onChange={handleSourceChange}>
+        <select
+          value={settings.selectedSource ?? undefined}
+          onChange={handleSourceChange}
+        >
           {Object.entries(settings.sources!).map(([key, source]) => (
-            <option key={key} value={key}>{source.name}</option>
+            <option key={key} value={key}>
+              {source.name}
+            </option>
           ))}
         </select>
-        <ArrowDown strokeWidth={1.5}/>
+        <ArrowDown strokeWidth={1.5} />
       </div>
     </div>
   );

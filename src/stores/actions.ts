@@ -9,7 +9,7 @@ export class ActionsStore {
   public status: Record<string, Status> = {};
 
   constructor() {
-    makeAutoObservable(this, {}, {autoBind: true});
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   public async install(localization: Localization) {
@@ -30,9 +30,7 @@ export class ActionsStore {
         })
       );
     } catch (error) {
-      toastError(
-        i18n.t("error.install", { localization: localization.name })
-      );
+      toastError(i18n.t("error.install", { localization: localization.name }));
       console.error(error);
     } finally {
       runInAction(() => {
@@ -52,7 +50,9 @@ export class ActionsStore {
 
     try {
       await invoke("uninstall_localization", { localization });
-      toastSuccess(i18n.t("localization.uninstalled", { localization: localization.name }));
+      toastSuccess(
+        i18n.t("localization.uninstalled", { localization: localization.name })
+      );
     } catch (error) {
       toastError(i18n.t("error.uninstall"));
       console.error(error);
@@ -74,7 +74,9 @@ export class ActionsStore {
 
     try {
       await invoke("repair_localization", { localization });
-      toastSuccess(i18n.t("localization.repaired", { localization: localization.name }));
+      toastSuccess(
+        i18n.t("localization.repaired", { localization: localization.name })
+      );
     } catch (error) {
       toastError(i18n.t("error.repair"));
       console.error(error);

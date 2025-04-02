@@ -15,12 +15,12 @@ function Page() {
   if (!id) {
     return (
       <div className="h-full flex gap-2 items-center justify-center text-limbus-500">
-        <ArrowLeft className="w-6 h-6" strokeWidth={1.5}/>
+        <ArrowLeft className="w-6 h-6" strokeWidth={1.5} />
         <h1>{t("localization.select")}</h1>
       </div>
-    )
+    );
   }
-  
+
   const localization = localizations.byId[id];
 
   if (!localization) {
@@ -28,7 +28,7 @@ function Page() {
       <div className="h-full flex gap-2 items-center justify-center text-danger">
         <h1>{t("localization.notFound")}</h1>
       </div>
-    )
+    );
   }
 
   return (
@@ -37,14 +37,14 @@ function Page() {
         <img src={localization.icon} alt={localization.name} />
         <div className={styles.info}>
           <h1>{localization.name}</h1>
-          <span>{t("localization.authors")}: {localization.authors.join(", ")}</span>
+          <span>
+            {t("localization.authors")}: {localization.authors.join(", ")}
+          </span>
         </div>
         <Actions localization={localization} />
       </div>
       <div className={styles.description}>
-        <Markdown>
-          {localization.description}
-        </Markdown>
+        <Markdown>{localization.description}</Markdown>
       </div>
     </div>
   );

@@ -8,10 +8,7 @@ function Header() {
   const appWindow = useMemo(() => getCurrentWindow(), []);
 
   return (
-    <header 
-      data-tauri-drag-region="true"
-      className={styles.header}
-    >
+    <header data-tauri-drag-region="true" className={styles.header}>
       <span>{t("title")}</span>
       <div className={styles.controls}>
         <button onClick={handleMinimize}>

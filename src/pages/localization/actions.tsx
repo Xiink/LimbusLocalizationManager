@@ -29,16 +29,19 @@ function Actions({ localization }: ActionsProps) {
               </button>
             )}
 
-          {installedVersion && (
-            <>
-              <button onClick={handleRepair} title={t("localization.repair")}>
-                <Hammer className="w-6 h-6 shrink-0" />
-              </button>
-              <button onClick={handleUninstall} title={t("localization.uninstall")}>
-                <X className="w-6 h-6 shrink-0" />
-              </button>
-            </>
-          )}
+            {installedVersion && (
+              <>
+                <button onClick={handleRepair} title={t("localization.repair")}>
+                  <Hammer className="w-6 h-6 shrink-0" />
+                </button>
+                <button
+                  onClick={handleUninstall}
+                  title={t("localization.uninstall")}
+                >
+                  <X className="w-6 h-6 shrink-0" />
+                </button>
+              </>
+            )}
           </>
         )}
 

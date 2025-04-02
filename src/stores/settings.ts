@@ -9,7 +9,7 @@ export class SettingsStore {
   public isSaving: boolean = false;
 
   constructor() {
-    makeAutoObservable(this, {}, {autoBind: true});
+    makeAutoObservable(this, {}, { autoBind: true });
 
     listen<AppSettings>("settings_updated", (event) => {
       runInAction(() => {
@@ -27,12 +27,16 @@ export class SettingsStore {
 
     try {
       const settings = await invoke<AppSettings>("get_settings");
-      runInAction(() => { this.settings = settings });
+      runInAction(() => {
+        this.settings = settings;
+      });
     } catch (error) {
       console.error(error);
       throw error;
     } finally {
-      runInAction(() => { this.isLoading = false });
+      runInAction(() => {
+        this.isLoading = false;
+      });
     }
   }
 
