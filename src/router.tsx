@@ -6,6 +6,7 @@ import { SettingsPage } from "@/pages/settings";
 import { AboutPage } from "@/pages/about";
 import { LocalizationPage } from "@/pages/localization";
 import { rootStore } from "@/stores";
+
 export const routes: RouteObject[] = [
   {
     element: <MainLayout />,

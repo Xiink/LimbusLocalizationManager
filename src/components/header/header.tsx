@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { X, Minus } from "lucide-react";
 import styles from "./styles.module.css";
 import { useTranslation } from "react-i18next";
+
 function Header() {
   const { t } = useTranslation();
   const appWindow = useMemo(() => getCurrentWindow(), []);
