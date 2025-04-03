@@ -1,12 +1,14 @@
+use md5::{Digest, Md5};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::{
-    fs, io,
+    fs, io::{self, BufReader, Read, Write},
     path::{Path, PathBuf},
     time::Duration,
 };
 use tempfile::Builder;
 use zip::ZipArchive;
+use futures::stream::StreamExt;
 
 use crate::steam;
 
@@ -66,6 +68,127 @@ pub async fn fetch_available_localizations(url: &str) -> Result<Vec<Localization
         .map_err(|e| format!("Failed to parse JSON: {}", e))?;
 
     Ok(localizations.localizations)
+}
+
+pub async fn install_fonts_for_localization(
+    game_directory: Option<String>,
+    localization: Localization,
+) -> Result<(), String> {
+    let game_path = if let Some(dir) = game_directory {
+        PathBuf::from(dir)
+    } else {
+        steam::get_game_directory()?
+    };
+
+    let font_cache_dir = game_path.join("FontCache");
+    fs::create_dir_all(&font_cache_dir)
+        .map_err(|e| format!("Failed to create FontCache directory: {}", e))?;
+
+    let font_info = &localization.font;
+    let font_url = &font_info.url;
+    let expected_hash = &font_info.hash;
+
+    let extension = Path::new(font_url)
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .map(|ext| ext.to_lowercase())
+        .filter(|ext| ext == "ttf" || ext == "otf")
+        .unwrap_or_else(|| "ttf".to_string());
+
+    let font_filename = format!("{}.{}", expected_hash, extension);
+    let font_cache_path = font_cache_dir.join(&font_filename);
+
+    let mut needs_download = true;
+    if font_cache_path.exists() {
+        println!("Font found in cache: {:?}", font_cache_path);
+        match calculate_md5(&font_cache_path) {
+            Ok(calculated_hash) => {
+                if calculated_hash == *expected_hash {
+                    println!("Cached font hash matches. Skipping download.");
+                    needs_download = false;
+                } else {
+                    println!(
+                        "Cached font hash mismatch (expected: {}, found: {}). Re-downloading.",
+                        expected_hash, calculated_hash
+                    );
+                    fs::remove_file(&font_cache_path).map_err(|e| {
+                        format!(
+                            "Failed to remove mismatched cached font {:?}: {}",
+                            font_cache_path, e
+                        )
+                    })?;
+                }
+            }
+            Err(e) => {
+                println!(
+                    "Failed to calculate hash for cached font {:?}: {}. Re-downloading.",
+                    font_cache_path, e
+                );
+                fs::remove_file(&font_cache_path).map_err(|e| {
+                    format!(
+                        "Failed to remove potentially corrupted cached font {:?}: {}",
+                            font_cache_path, e
+                        )
+                    })?;
+            }
+        }
+    }
+
+    if needs_download {
+        println!("Downloading font from: {}", font_url);
+        download_and_validate_font(font_url, &font_cache_path, expected_hash).await?;
+    } else {
+         println!("Using cached font: {:?}", font_cache_path);
+    }
+
+    let target_fonts_dir = game_path
+        .join("LimbusCompany_Data")
+        .join("Lang")
+        .join(&localization.id)
+        .join("Fonts"); // Folder name is "Fonts"
+
+    fs::create_dir_all(&target_fonts_dir)
+        .map_err(|e| format!("Failed to create target Fonts directory {:?}: {}", target_fonts_dir, e))?;
+
+    let target_font_path = target_fonts_dir.join(&font_filename);
+
+    let mut needs_copy = true;
+    if target_font_path.exists() {
+         match calculate_md5(&target_font_path) {
+            Ok(target_hash) => {
+                if target_hash == *expected_hash {
+                    println!("Target font {:?} already exists and hash matches. Skipping copy.", target_font_path);
+                    needs_copy = false;
+                } else {
+                     println!("Target font {:?} exists but hash mismatches. Overwriting.", target_font_path);
+                }
+            }
+            Err(e) => {
+                 println!("Failed to calculate hash for target font {:?}: {}. Overwriting.", target_font_path, e);
+            }
+         }
+    }
+
+
+    if needs_copy {
+        println!(
+            "Copying font from cache {:?} to {:?}",
+            font_cache_path, target_font_path
+        );
+        fs::copy(&font_cache_path, &target_font_path).map_err(|e| {
+            format!(
+                "Failed to copy font from cache {:?} to target {:?}: {}",
+                font_cache_path, target_font_path, e
+            )
+        })?;
+    }
+
+
+    println!(
+        "Successfully installed font for localization '{}'",
+        localization.id
+    );
+    Ok(())
 }
 
 pub async fn install_localization(
@@ -316,4 +439,103 @@ fn copy_directory_contents(src_dir: &Path, dest_dir: &Path) -> Result<(), String
     }
 
     Ok(())
+}
+
+fn calculate_md5(file_path: &Path) -> Result<String, String> {
+    let file = fs::File::open(file_path)
+        .map_err(|e| format!("Failed to open file for hashing {:?}: {}", file_path, e))?;
+
+    let mut reader = BufReader::with_capacity(64 * 1024, file);
+    let mut hasher = Md5::new();
+    let mut buffer = [0; 1024];
+
+    loop {
+        let n = reader.read(&mut buffer).map_err(|e| {
+            format!(
+                "Failed to read file chunk for hashing {:?}: {}",
+                file_path, e
+            )
+        })?;
+        if n == 0 {
+            break;
+        }
+        hasher.update(&buffer[..n]);
+    }
+
+    let result = hasher.finalize();
+    Ok(format!("{:x}", result))
+}
+
+async fn download_and_validate_font(
+    url: &str,
+    save_path: &Path,
+    expected_hash: &str,
+) -> Result<(), String> {
+    let client = Client::new();
+
+    println!("Starting download from {} to {:?}", url, save_path);
+
+    let response = client
+        .get(url)
+        // Increased timeout for potentially large font files
+        .timeout(Duration::from_secs(300))
+        .send()
+        .await
+        .map_err(|e| format!("Font download request error from {}: {}", url, e))?;
+
+    if !response.status().is_success() {
+        return Err(format!(
+            "Font download from {} failed with HTTP status {}",
+            url,
+            response.status()
+        ));
+    }
+
+    if let Some(parent_dir) = save_path.parent() {
+        fs::create_dir_all(parent_dir).map_err(|e| format!("Failed to create directory for font file {:?}: {}", parent_dir, e))?;
+    }
+
+    let temp_save_path = save_path.with_extension("tmp_download");
+
+    let mut dest = fs::File::create(&temp_save_path).map_err(|e| {
+        format!(
+            "Failed to create temporary font file {:?}: {}",
+            temp_save_path, e
+        )
+    })?;
+
+    let mut hasher = Md5::new();
+    let mut stream = response.bytes_stream();
+
+    while let Some(chunk_result) = stream.next().await {
+        let chunk =
+            chunk_result.map_err(|e| format!("Error reading download stream from {}: {}", url, e))?;
+        hasher.update(&chunk);
+        dest.write_all(&chunk).map_err(|e| {
+            format!(
+                "Failed to write chunk to temp file {:?}: {}",
+                temp_save_path, e
+            )
+        })?;
+    }
+
+    dest.sync_all().map_err(|e| format!("Failed to sync temporary font file {:?}: {}", temp_save_path, e))?;
+    drop(dest);
+
+    let calculated_hash = format!("{:x}", hasher.finalize());
+
+    if calculated_hash != expected_hash {
+        fs::remove_file(&temp_save_path).ok();
+        Err(format!(
+            "Font hash mismatch for {}. Expected: {}, Calculated: {}. Download saved to {:?} was discarded.",
+            url, expected_hash, calculated_hash, temp_save_path
+        ))
+    } else {
+        fs::rename(&temp_save_path, save_path).map_err(|e| format!("Failed to rename temporary font file {:?} to {:?}: {}", temp_save_path, save_path, e))?;
+        println!(
+            "Font downloaded successfully to {:?} and hash validated ({})",
+            save_path, calculated_hash
+        );
+        Ok(())
+    }
 }

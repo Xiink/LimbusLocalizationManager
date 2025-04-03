@@ -68,7 +68,10 @@ async fn install_localization(
     localization: utils::Localization,
 ) -> Result<(), String> {
     let mut settings_guard = state.lock().await;
+
     utils::install_localization(settings_guard.game_directory.clone(), localization.clone())
+        .await?;
+    utils::install_fonts_for_localization(settings_guard.game_directory.clone(), localization.clone())
         .await?;
 
     settings_guard

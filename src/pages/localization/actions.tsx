@@ -2,8 +2,9 @@ import { rootStore } from "@/stores";
 import { Localization, Status } from "@/stores/models";
 import { observer } from "mobx-react-lite";
 import styles from "./actions.module.css";
-import { Hammer, Loader2, Plus, X } from "lucide-react";
+import { Hammer, Plus, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Grid } from "react-loader-spinner";
 
 interface ActionsProps {
   localization: Localization;
@@ -43,10 +44,8 @@ function Actions({ localization }: ActionsProps) {
           </>
         )}
 
-        {status === Status.Installing && (
-          <div className={styles.installing}>
-            <Loader2 className="w-6 h-6 shrink-0 animate-spin text-limbus-500" />
-          </div>
+        {status !== Status.Idle && (
+          <Grid color="#cf8d23" width={24} height={24} wrapperClass="shrink-0" />
         )}
       </div>
 

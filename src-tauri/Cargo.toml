@@ -22,16 +22,18 @@ tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-reqwest = { version = "0.12.15", features = ["json", "rustls-tls"] }
+reqwest = { version = "0.12.15", features = ["json", "rustls-tls", "stream"] }
 dirs = "5.0"
 anyhow = "1.0.97"
-tokio = "1.44.1"
+tokio = { version = "1.44.1", features = ["full"] }
 zip = "2.1"
 tempfile = "3.10"
 log = "0.4"
 env_logger = "0.11"
 tauri-plugin-dialog = "2"
 toml = "0.8.20"
+md-5 = "0.10.6"
+futures = "0.3.31"
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.51.0"
