@@ -1,5 +1,9 @@
 {
   "title": "Limbus Launcher",
+  "home": {
+    "play": "Update & Play",
+    "title": "Limbus Company Localizer"
+  },
   "settings": {
     "interfaceLanguage": "Interface language",
     "source": "Source",

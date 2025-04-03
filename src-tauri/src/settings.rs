@@ -36,7 +36,7 @@ impl AppSettings {
 
 fn get_config_path(app_handle: &tauri::AppHandle) -> Result<PathBuf, anyhow::Error> {
     let config_dir = app_handle.path().app_config_dir()?;
-    Ok(config_dir.join("config.json"))
+    Ok(config_dir.join("config.toml"))
 }
 
 fn load_default_settings(app_handle: &tauri::AppHandle) -> Result<AppSettings, anyhow::Error> {
@@ -48,13 +48,13 @@ fn load_default_settings(app_handle: &tauri::AppHandle) -> Result<AppSettings, a
 
     let resource_path = app_handle
         .path()
-        .resolve("resources/default_config.json", BaseDirectory::Resource)?;
+        .resolve("resources/default_config.toml", BaseDirectory::Resource)?;
 
     println!("Loading default config from: {:?}", resource_path);
 
     if !resource_path.exists() {
         eprintln!(
-            "Warning: default_config.json not found at {:?}. Using hardcoded default.",
+            "Warning: default_config.toml not found at {:?}. Using hardcoded default.",
             resource_path
         );
         let default_settings = AppSettings::default();
@@ -63,7 +63,7 @@ fn load_default_settings(app_handle: &tauri::AppHandle) -> Result<AppSettings, a
     }
 
     let default_config_content = fs::read_to_string(&resource_path)?;
-    let default_settings: AppSettings = serde_json::from_str(&default_config_content)?;
+    let default_settings: AppSettings = toml::from_str(&default_config_content)?;
 
     save_settings(app_handle, &default_settings)?;
 
@@ -75,7 +75,7 @@ pub fn load_settings(app_handle: &tauri::AppHandle) -> Result<AppSettings, anyho
 
     if config_path.exists() {
         let config_content = fs::read_to_string(&config_path)?;
-        let settings: AppSettings = serde_json::from_str(&config_content).unwrap_or_else(|e| {
+        let settings: AppSettings = toml::from_str(&config_content).unwrap_or_else(|e| {
             eprintln!("Failed to parse config file: {}", e);
             load_default_settings(app_handle).unwrap()
         });
@@ -95,7 +95,7 @@ pub fn save_settings(
     settings: &AppSettings,
 ) -> Result<(), anyhow::Error> {
     let config_path = get_config_path(app_handle)?;
-    let config_content = serde_json::to_string(settings)?;
+    let config_content = toml::to_string(settings)?;
     fs::write(&config_path, config_content)?;
     println!("Settings saved to: {:?}", config_path);
     Ok(())

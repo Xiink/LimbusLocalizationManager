@@ -10,7 +10,7 @@ type SettingsState = Mutex<settings::AppSettings>;
 #[tauri::command]
 async fn get_available_localizations(
     state: State<'_, SettingsState>,
-) -> Result<utils::AvailableLocalizations, String> {
+) -> Result<Vec<utils::Localization>, String> {
     let settings_guard = state.lock().await;
 
     let active_source = settings_guard
@@ -18,7 +18,13 @@ async fn get_available_localizations(
         .as_ref()
         .ok_or_else(|| "No active source selected".to_string())?;
 
-    let localizations = utils::fetch_available_localizations(active_source).await?;
+    let source_url = &settings_guard
+        .sources
+        .get(active_source)
+        .ok_or_else(|| "No active source selected".to_string())?
+        .url;
+
+    let localizations = utils::fetch_available_localizations(source_url).await?;
     Ok(localizations)
 }
 

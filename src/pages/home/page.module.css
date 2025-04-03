@@ -1,0 +1,14 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.container {
+  @apply relative flex-1 flex flex-col items-center justify-center gap-4;
+}
+
+.play {
+  @apply text-limbus-500 px-4 py-2 rounded-md border-1 border-limbus-500
+    hover:bg-limbus-500 hover:text-white transition-colors
+    cursor-pointer;
+}
+
+

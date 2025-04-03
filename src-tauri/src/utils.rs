@@ -21,6 +21,15 @@ pub enum Format {
     Compatible,
     #[serde(rename = "new")]
     New,
+
+    #[serde(untagged)]
+    Unknown(String),
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct Font {
+    pub url: String,
+    pub hash: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -32,16 +41,17 @@ pub struct Localization {
     pub icon: String,
     pub description: String,
     pub authors: Vec<String>,
-    pub urls: Vec<String>,
+    pub url: String,
+    pub font: Font,
     pub format: Format,
 }
 
-pub async fn fetch_available_localizations(url: &str) -> Result<AvailableLocalizations, String> {
+pub async fn fetch_available_localizations(url: &str) -> Result<Vec<Localization>, String> {
     let client = Client::new();
 
     let response = client
         .get(url)
-        .timeout(Duration::from_secs(10))
+        .timeout(Duration::from_secs(30))
         .send()
         .await
         .map_err(|e| format!("Request error: {}", e))?;
@@ -55,7 +65,7 @@ pub async fn fetch_available_localizations(url: &str) -> Result<AvailableLocaliz
         .await
         .map_err(|e| format!("Failed to parse JSON: {}", e))?;
 
-    Ok(localizations)
+    Ok(localizations.localizations)
 }
 
 pub async fn install_localization(
@@ -122,30 +132,8 @@ async fn download_localization_file(
     let client = Client::new();
     let download_path = temp_dir.path().join("localization.zip");
 
-    // Try downloading from the primary URL and then mirrors
-    for url in &localization.urls {
-        println!("Attempting download from: {}", url);
-        match download_file(&client, url, &download_path).await {
-            Ok(_) => {
-                println!("Successfully downloaded localization from: {}", url);
-                return Ok(download_path);
-            }
-            Err(e) => {
-                println!("Failed to download from {}: {}. Trying next URL.", url, e);
-                // Continue to the next URL
-            }
-        }
-    }
-
-    Err(format!(
-        "Failed to download localization '{}' from all provided URLs.",
-        localization.id
-    ))
-}
-
-async fn download_file(client: &Client, url: &str, destination: &Path) -> Result<(), String> {
     let response = client
-        .get(url)
+        .get(&localization.url)
         .timeout(Duration::from_secs(30))
         .send()
         .await
@@ -155,7 +143,7 @@ async fn download_file(client: &Client, url: &str, destination: &Path) -> Result
         return Err(format!("HTTP error {}", response.status()));
     }
 
-    let mut output_file = fs::File::create(destination)
+    let mut output_file = fs::File::create(&download_path)
         .map_err(|e| format!("Failed to create output file: {}", e))?;
 
     let bytes = response
@@ -166,7 +154,8 @@ async fn download_file(client: &Client, url: &str, destination: &Path) -> Result
     std::io::copy(&mut std::io::Cursor::new(bytes), &mut output_file)
         .map_err(|e| format!("Failed to write data to file: {}", e))?;
 
-    Ok(())
+    println!("Successfully downloaded localization from: {}", &localization.url);
+    return Ok(download_path);
 }
 
 fn extract_zip_archive(zip_path: &Path, extract_path: &Path) -> Result<(), String> {
@@ -237,6 +226,9 @@ fn find_language_directory(extract_path: &Path, format: &Format) -> Result<PathB
                 extract_path
             );
             Ok(extract_path.to_path_buf())
+        },
+        Format::Unknown(unknown) => {
+            Err(format!("Unknown localization format: {}", unknown))
         }
     }
 }

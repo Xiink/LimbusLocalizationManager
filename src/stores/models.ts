@@ -22,6 +22,11 @@ export const Format = {
 
 export type Format = (typeof Format)[keyof typeof Format];
 
+export interface Font {
+  url: string;
+  hash: string;
+}
+
 export interface Localization {
   id: string;
   version: string;
@@ -30,7 +35,8 @@ export interface Localization {
   icon: string;
   description: string;
   authors: string[];
-  urls: string[];
+  url: string;
+  font: Font;
   format: Format;
 }
 
