@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { rootStore } from "@/stores";
 import { open } from "@tauri-apps/plugin-dialog";
 import { toastError } from "@/components/toast/toast";
+import { languageNames } from "@/i18n";
 
 function Page() {
   const { t } = useTranslation();
@@ -18,13 +19,15 @@ function Page() {
         <div className={styles.section}>
           <h2>{t("settings.interfaceLanguage")}</h2>
           <div className={styles.select}>
-            <select>
-              <option value="en">English</option>
-              <option value="pl">Polish</option>
-              <option value="de">German</option>
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
-              <option value="it">Italian</option>
+            <select
+              value={settings.language}
+              onChange={handleLanguageChange}
+            >
+              {Object.entries(languageNames).map(([key, name]) => (
+                <option key={key} value={key}>
+                  {name}
+                </option>
+              ))}
             </select>
             <ArrowDown strokeWidth={1.5} />
           </div>
@@ -101,6 +104,12 @@ function Page() {
       console.error(error);
       toastError(t("error.setGameDirectory"));
     }
+  }
+
+  function handleLanguageChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    settings.setLanguage(
+      event.target.value as keyof typeof languageNames
+    );
   }
 }
 
