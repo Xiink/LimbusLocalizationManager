@@ -169,7 +169,6 @@ pub async fn install_fonts_for_localization(
          }
     }
 
-
     if needs_copy {
         println!(
             "Copying font from cache {:?} to {:?}",
@@ -182,7 +181,6 @@ pub async fn install_fonts_for_localization(
             )
         })?;
     }
-
 
     println!(
         "Successfully installed font for localization '{}'",
@@ -269,16 +267,19 @@ async fn download_localization_file(
     let mut output_file = fs::File::create(&download_path)
         .map_err(|e| format!("Failed to create output file: {}", e))?;
 
-    let bytes = response
-        .bytes()
-        .await
-        .map_err(|e| format!("Failed to get response bytes: {}", e))?;
+    let mut stream = response.bytes_stream();
+    
+    while let Some(chunk_result) = stream.next().await {
+        let chunk = chunk_result.map_err(|e| format!("Failed to read chunk: {}", e))?;
+        output_file.write_all(&chunk)
+            .map_err(|e| format!("Failed to write data chunk to file: {}", e))?;
+    }
 
-    std::io::copy(&mut std::io::Cursor::new(bytes), &mut output_file)
-        .map_err(|e| format!("Failed to write data to file: {}", e))?;
+    output_file.flush()
+        .map_err(|e| format!("Failed to flush file data: {}", e))?;
 
     println!("Successfully downloaded localization from: {}", &localization.url);
-    return Ok(download_path);
+    Ok(download_path)
 }
 
 fn extract_zip_archive(zip_path: &Path, extract_path: &Path) -> Result<(), String> {
