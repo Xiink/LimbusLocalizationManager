@@ -2,15 +2,17 @@ import { observer } from "mobx-react-lite";
 import { rootStore } from "@/stores";
 import styles from "./page.module.css";
 import { NavLink, Outlet, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 function Page() {
   const { localizations } = rootStore;
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   if (localizations.isLoading) {
     return (
       <div className={styles.loading}>
-        <p>Loading localizations</p>
+        <p>{t("localizations.loading")}</p>
       </div>
     );
   }
@@ -18,11 +20,11 @@ function Page() {
   if (localizations.error) {
     return (
       <div className={styles.error}>
-        <span>Failed to fetch localizations!</span>
+        <span>{t("localizations.error")}</span>
         <div className={styles.actions}>
-          <button onClick={tryAgain}>Try again</button>
+          <button onClick={tryAgain}>{t("localizations.tryAgain")}</button>
           <button onClick={() => navigate("/settings", { replace: true })}>
-            Change source
+            {t("localizations.changeSource")}
           </button>
         </div>
       </div>

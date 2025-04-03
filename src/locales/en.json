@@ -16,6 +16,12 @@
     "uninstalled": "Localization {{localization}} uninstalled",
     "repaired": "Repaired localization {{localization}}"
   },
+  "localizations": {
+    "loading": "Loading localizations",
+    "error": "Failed to fetch localizations!",
+    "tryAgain": "Try again",
+    "changeSource": "Change source"
+  },
   "error": {
     "install": "Failed to install localization {{localization}}"
   }
