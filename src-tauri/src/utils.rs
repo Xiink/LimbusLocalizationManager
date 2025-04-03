@@ -71,8 +71,8 @@ pub async fn fetch_available_localizations(url: &str) -> Result<Vec<Localization
 }
 
 pub async fn install_fonts_for_localization(
-    game_directory: Option<String>,
-    localization: Localization,
+    game_directory: &Option<String>,
+    localization: &Localization,
 ) -> Result<(), String> {
     let game_path = if let Some(dir) = game_directory {
         PathBuf::from(dir)
@@ -190,8 +190,8 @@ pub async fn install_fonts_for_localization(
 }
 
 pub async fn install_localization(
-    game_directory: Option<String>,
-    localization: Localization,
+    game_directory: &Option<String>,
+    localization: &Localization,
 ) -> Result<(), String> {
     let temp_dir = create_temp_directory(&localization.id)?;
     let extract_path = temp_dir.path();
@@ -203,7 +203,7 @@ pub async fn install_localization(
 
     let language_dir = find_language_directory(extract_path, &localization.format)?;
 
-    install_to_game_directory(game_directory, &language_dir, &localization)?;
+    install_to_game_directory(&game_directory, &language_dir, &localization)?;
 
     println!(
         "Successfully installed localization '{}' version '{}'",
@@ -213,8 +213,8 @@ pub async fn install_localization(
 }
 
 pub async fn uninstall_localization(
-    game_directory: Option<String>,
-    localization: Localization,
+    game_directory: &Option<String>,
+    localization: &Localization,
 ) -> Result<(), String> {
     let game_path = if let Some(game_directory) = game_directory {
         PathBuf::from(game_directory)
@@ -382,7 +382,7 @@ fn find_compatible_language_dir(extract_path: &Path) -> Result<PathBuf, String> 
 }
 
 fn install_to_game_directory(
-    game_directory: Option<String>,
+    game_directory: &Option<String>,
     language_dir: &Path,
     localization: &Localization,
 ) -> Result<(), String> {

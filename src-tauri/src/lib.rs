@@ -69,9 +69,9 @@ async fn install_localization(
 ) -> Result<(), String> {
     let mut settings_guard = state.lock().await;
 
-    utils::install_localization(settings_guard.game_directory.clone(), localization.clone())
+    utils::install_localization(&settings_guard.game_directory, &localization)
         .await?;
-    utils::install_fonts_for_localization(settings_guard.game_directory.clone(), localization.clone())
+    utils::install_fonts_for_localization(&settings_guard.game_directory, &localization)
         .await?;
 
     settings_guard
@@ -92,7 +92,7 @@ async fn uninstall_localization(
     localization: utils::Localization,
 ) -> Result<(), String> {
     let mut settings_guard = state.lock().await;
-    utils::uninstall_localization(settings_guard.game_directory.clone(), localization.clone())
+    utils::uninstall_localization(&settings_guard.game_directory, &localization)
         .await?;
     settings_guard.installed.remove(&localization.id);
     settings::save_settings(&app_handle, &settings_guard).map_err(|e| e.to_string())?;
@@ -137,6 +137,70 @@ async fn set_game_directory(
     Ok(())
 }
 
+#[tauri::command]
+async fn update_and_play(
+    app_handle: tauri::AppHandle,
+    state: State<'_, SettingsState>,
+) -> Result<(), String> {
+    app_handle.emit("play:started", ()).unwrap();
+
+    let mut settings_guard = state.lock().await;
+    let active_source = settings_guard
+        .selected_source
+        .as_ref()
+        .ok_or_else(|| "No active source selected".to_string())?;
+    
+    let source_url = &settings_guard
+        .sources
+        .get(active_source)
+        .ok_or_else(|| "No active source selected".to_string())?
+        .url;
+    
+    let remote_localizations = utils::fetch_available_localizations(source_url).await?;
+    let localizations_to_update: Vec<_> = settings_guard.installed.values()
+        .filter_map(|localization| {
+            let remote_localization = remote_localizations
+                .iter()
+                .find(|l| l.id == localization.id);
+
+            if let None = remote_localization {
+                println!("Localization {} not found in remote source", &localization.id);
+                app_handle.emit("play:unknown_localization", &localization.id).unwrap();
+                return None;
+            }
+
+            let remote_localization = remote_localization.unwrap();
+            if remote_localization.version == localization.version {
+                println!("Localization {} is up to date", &localization.id);
+                app_handle.emit("play:up_to_date", &localization.id).unwrap();
+                return None;
+            }
+
+            Some((localization.id.clone(), remote_localization.clone()))
+        })
+        .collect();
+
+    for (localization_id, remote_localization) in localizations_to_update {
+        println!("Updating localization {} to version {}", &localization_id, &remote_localization.version);
+        app_handle.emit("play:updating", &localization_id).unwrap();
+
+        utils::install_localization(&settings_guard.game_directory, &remote_localization)
+            .await?;
+        utils::install_fonts_for_localization(&settings_guard.game_directory, &remote_localization)
+            .await?;
+
+        app_handle.emit("play:update_finished", &localization_id).unwrap();
+        settings_guard.installed.insert(remote_localization.id.clone(), remote_localization);
+    }
+
+    settings::save_settings(&app_handle, &settings_guard).map_err(|e| e.to_string())?;
+    app_handle.emit("play:starting_game", ()).unwrap();
+    steam::launch_game()?;
+    app_handle.emit("play:finished", ()).unwrap();
+
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -163,6 +227,7 @@ pub fn run() {
             uninstall_localization,
             repair_localization,
             set_game_directory,
+            update_and_play,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
