@@ -54,6 +54,7 @@ pub async fn fetch_available_localizations(url: &str) -> Result<Vec<Localization
 
     let response = client
         .get(url)
+        .header("User-Agent", "Limbus Launcher")
         .timeout(Duration::from_secs(30))
         .send()
         .await
@@ -256,6 +257,7 @@ async fn download_localization_file(
 
     let response = client
         .get(&localization.url)
+        .header("User-Agent", "Limbus Launcher")
         .timeout(Duration::from_secs(30))
         .send()
         .await
@@ -479,6 +481,7 @@ async fn download_and_validate_font(
 
     let response = client
         .get(url)
+        .header("User-Agent", "Limbus Launcher")
         .timeout(Duration::from_secs(300))
         .send()
         .await
