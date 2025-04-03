@@ -16,8 +16,6 @@ function Actions({ localization }: ActionsProps) {
   const installedVersion = settings.installed?.[localization.id]?.version;
   const status = actions.getStatus(localization);
 
-  console.log(status, installedVersion);
-
   return (
     <div className={styles.container}>
       <div className={styles.controls}>

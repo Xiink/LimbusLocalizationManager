@@ -28,7 +28,7 @@ pub struct Localization {
     pub id: String,
     pub version: String,
     pub name: String,
-    pub country: String,
+    pub flag: String,
     pub icon: String,
     pub description: String,
     pub authors: Vec<String>,

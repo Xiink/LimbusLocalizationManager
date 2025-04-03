@@ -41,7 +41,7 @@ function Page() {
             className={styles.item}
           >
             <img
-              src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${localization.country}.svg`}
+              src={localizations.flags[localization.id]}
               alt={localization.name}
               className="w-6 h-4"
             />

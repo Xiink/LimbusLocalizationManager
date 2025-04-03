@@ -6,7 +6,7 @@ import { Home, Info, Settings, Map } from "lucide-react";
 function Navbar() {
   return (
     <nav className={styles.container}>
-      <NavLink to="/" className={getLinkClassName}>
+      <NavLink to="/home" className={getLinkClassName}>
         <Home className="w-8 h-8" />
       </NavLink>
       <NavLink to="/localizations" className={getLinkClassName}>

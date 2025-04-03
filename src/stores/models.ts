@@ -26,7 +26,7 @@ export interface Localization {
   id: string;
   version: string;
   name: string;
-  country: string;
+  flag: string;
   icon: string;
   description: string;
   authors: string[];
