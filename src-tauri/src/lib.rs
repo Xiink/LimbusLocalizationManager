@@ -4,6 +4,7 @@ mod utils;
 
 use tauri::{Emitter, Manager, State};
 use tokio::sync::Mutex;
+use log::{info, error};
 
 type SettingsState = Mutex<settings::AppSettings>;
 
@@ -164,14 +165,14 @@ async fn update_and_play(
                 .find(|l| l.id == localization.id);
 
             if let None = remote_localization {
-                println!("Localization {} not found in remote source", &localization.id);
+                info!("Localization {} not found in remote source", &localization.id);
                 app_handle.emit("play:unknown_localization", &localization.id).unwrap();
                 return None;
             }
 
             let remote_localization = remote_localization.unwrap();
             if remote_localization.version == localization.version {
-                println!("Localization {} is up to date", &localization.id);
+                info!("Localization {} is up to date", &localization.id);
                 app_handle.emit("play:up_to_date", &localization.id).unwrap();
                 return None;
             }
@@ -181,7 +182,7 @@ async fn update_and_play(
         .collect();
 
     for (localization_id, remote_localization) in localizations_to_update {
-        println!("Updating localization {} to version {}", &localization_id, &remote_localization.version);
+        info!("Updating localization {} to version {}", &localization_id, &remote_localization.version);
         app_handle.emit("play:updating", &localization_id).unwrap();
 
         utils::install_localization(&settings_guard.game_directory, &remote_localization)
@@ -203,13 +204,15 @@ async fn update_and_play(
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    env_logger::init();
+
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             let app_handle = app.handle();
 
             let app_settings = settings::load_settings(&app_handle).unwrap_or_else(|e| {
-                eprintln!("Failed to load settings: {}", e);
+                error!("Failed to load settings: {}", e);
                 settings::AppSettings::default()
             });
 
