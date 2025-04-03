@@ -30,6 +30,7 @@
   },
   "error": {
     "install": "Failed to install localization {{localization}}",
-    "setGameDirectory": "Failed to set game directory"
+    "setGameDirectory": "Failed to set game directory",
+    "somethingWentWrong": "Something went wrong!"
   }
 }

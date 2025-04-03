@@ -7,6 +7,8 @@ import { AboutPage } from "@/pages/about";
 import { LocalizationPage } from "@/pages/localization";
 import { rootStore } from "@/stores";
 import { MainLayout } from "./layouts/main";
+import Fallback from "@/components/fallback/fallback";
+import ErrorBoundary from "@/components/error-boundary/error-boundary";
 
 export const routes: RouteObject[] = [
   {
@@ -14,9 +16,11 @@ export const routes: RouteObject[] = [
     children: [
       {
         element: <MainLayout />,
+        errorElement: <ErrorBoundary />,
         loader: async () => {
           await rootStore.settings.loadSettings();
         },
+        hydrateFallbackElement: <Fallback />,
         children: [
           {
             index: true,

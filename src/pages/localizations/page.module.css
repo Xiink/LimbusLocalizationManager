@@ -35,7 +35,7 @@
   @apply flex gap-2 items-center justify-center text-limbus-500;
 }
 
-.error div a:hover {
+.error div button:hover {
   @apply text-limbus-400 transition-colors duration-300;
 }
 
