@@ -1,5 +1,5 @@
-use std::path::PathBuf;
 use std::io;
+use std::path::PathBuf;
 use std::process::Command;
 
 const LIMBUS_STEAM_ID: u32 = 1973530;
@@ -8,7 +8,8 @@ const LIMBUS_STEAM_ID: u32 = 1973530;
 pub fn launch_game() -> Result<(), String> {
     if let Err(_) = Command::new("cmd")
         .args(["/C", "start", &format!("steam://run/{}", LIMBUS_STEAM_ID)])
-        .spawn() {
+        .spawn()
+    {
         return Err("Failed to launch Steam. Is it installed?".to_string());
     }
 
@@ -20,11 +21,12 @@ pub fn launch_game() -> Result<(), String> {
     let result = Command::new("xdg-open")
         .arg(format!("steam://run/{}", LIMBUS_STEAM_ID))
         .spawn();
-            
+
     if let Err(_) = result {
         if let Err(_) = Command::new("steam")
             .args([format!("steam://run/{}", LIMBUS_STEAM_ID)])
-            .spawn() {
+            .spawn()
+        {
             return Err("Failed to launch Steam. Is it installed?".to_string());
         }
     }
@@ -40,24 +42,31 @@ fn get_steam_path() -> io::Result<PathBuf> {
     let hkcu = RegKey::predef(HKEY_CURRENT_USER);
     let steam_key = hkcu.open_subkey("Software\\Valve\\Steam")?;
     let install_path: String = steam_key.get_value("SteamPath")?;
-    
+
     let path = PathBuf::from(install_path.replace("/", "\\"));
     if path.exists() {
         return Ok(path);
     }
-    
-    Err(io::Error::new(io::ErrorKind::NotFound, "Steam installation not found"))
+
+    Err(io::Error::new(
+        io::ErrorKind::NotFound,
+        "Steam installation not found",
+    ))
 }
 
 #[cfg(target_os = "macos")]
 fn get_steam_path() -> io::Result<PathBuf> {
-    let home = dirs::home_dir().ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Home directory not found"))?;
+    let home = dirs::home_dir()
+        .ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Home directory not found"))?;
     let path = home.join("Library/Application Support/Steam");
     if path.exists() {
         return Ok(path);
     }
-    
-    Err(io::Error::new(io::ErrorKind::NotFound, "Steam installation not found"))
+
+    Err(io::Error::new(
+        io::ErrorKind::NotFound,
+        "Steam installation not found",
+    ))
 }
 
 #[cfg(target_os = "linux")]
@@ -68,28 +77,44 @@ fn get_steam_path() -> io::Result<PathBuf> {
     if path.exists() {
         return Ok(path);
     }
-    
+
     let path = home.join(".local/share/Steam");
     if path.exists() {
         return Ok(path);
     }
-    
-    Err(io::Error::new(io::ErrorKind::NotFound, "Steam installation not found"))
+
+    Err(io::Error::new(
+        io::ErrorKind::NotFound,
+        "Steam installation not found",
+    ))
 }
 
+pub fn validate_game_directory(directory: &str) -> Result<(), String> {
+    let game_path = PathBuf::from(directory).join("LimbusCompany.exe");
+
+    if !game_path.exists() {
+        return Err("Invalid game directory".to_string());
+    }
+
+    let data_path = game_path.parent().unwrap().join("LimbusCompany_Data");
+    if !data_path.exists() {
+        return Err("Invalid game directory".to_string());
+    }
+
+    Ok(())
+}
 pub fn get_game_directory() -> Result<PathBuf, String> {
-    let steam_path = get_steam_path()
-        .map_err(|e| format!("Steam not found: {}", e))?;
+    let steam_path = get_steam_path().map_err(|e| format!("Steam not found: {}", e))?;
     let default_path = steam_path.join("steamapps").join("common");
-    
+
     let vdf_path = steam_path.join("steamapps").join("libraryfolders.vdf");
     if !vdf_path.exists() {
         return Err("Steam libraries file not found".to_string());
     }
-    
+
     let vdf_content = std::fs::read_to_string(vdf_path)
         .map_err(|e| format!("Failed to read Steam libraries file: {}", e))?;
-    
+
     let mut library_paths = vec![default_path];
     for line in vdf_content.lines() {
         if line.contains("\"path\"") {
@@ -99,15 +124,15 @@ pub fn get_game_directory() -> Result<PathBuf, String> {
             }
         }
     }
-    
+
     for library in library_paths {
         let parent = library.parent().ok_or("Invalid library path")?;
         let manifest_path = parent.join(format!("appmanifest_{}.acf", LIMBUS_STEAM_ID));
-        
+
         if manifest_path.exists() {
             let manifest = std::fs::read_to_string(manifest_path)
                 .map_err(|e| format!("Failed to read game manifest: {}", e))?;
-            
+
             for line in manifest.lines() {
                 if line.contains("\"installdir\"") {
                     if let Some(dir_name) = line.split('"').nth(3) {
@@ -117,6 +142,6 @@ pub fn get_game_directory() -> Result<PathBuf, String> {
             }
         }
     }
-    
+
     Err(format!("Limbus not found in any Steam library"))
 }

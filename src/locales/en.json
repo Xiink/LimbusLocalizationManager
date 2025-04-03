@@ -3,7 +3,9 @@
   "settings": {
     "interfaceLanguage": "Interface language",
     "source": "Source",
-    "title": "Settings"
+    "title": "Settings",
+    "gameDirectory": "Custom game directory",
+    "gameDirectoryDefault": "[Using default]"
   },
   "localization": {
     "authors": "Authors",
@@ -12,9 +14,9 @@
     "uninstall": "Uninstall",
     "repair": "Repair",
     "add": "Add",
-    "installed": "Localization {{localization}} {{version}} installed",
-    "uninstalled": "Localization {{localization}} uninstalled",
-    "repaired": "Repaired localization {{localization}}"
+    "installed": "Installed {{localization}} ({{version}})",
+    "uninstalled": "Uninstalled {{localization}}",
+    "repaired": "Repaired {{localization}}"
   },
   "localizations": {
     "loading": "Loading localizations",
@@ -23,6 +25,7 @@
     "changeSource": "Change source"
   },
   "error": {
-    "install": "Failed to install localization {{localization}}"
+    "install": "Failed to install localization {{localization}}",
+    "setGameDirectory": "Failed to set game directory"
   }
 }

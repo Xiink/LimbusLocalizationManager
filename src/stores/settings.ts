@@ -95,4 +95,20 @@ export class SettingsStore {
   public get installed() {
     return this.settings?.installed;
   }
+
+  public get gameDirectory() {
+    return this.settings?.game_directory ?? null;
+  }
+
+  public async setGameDirectory(directory: string | null) {
+    if (!this.settings) {
+      throw new Error("Settings are not loaded");
+    }
+
+    await invoke("set_game_directory", { directory });
+  }
+
+  public get isReady() {
+    return this.settings !== null;
+  }
 }

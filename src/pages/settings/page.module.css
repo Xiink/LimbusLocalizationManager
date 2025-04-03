@@ -2,11 +2,11 @@
 @reference "../../globals.css";
 
 .container {
-  @apply flex flex-col gap-2;
+  @apply flex flex-col gap-4;
 }
 
 .select {
-  @apply relative border-1 border-limbus-600/30 rounded-sm text-limbus-500 w-36;
+  @apply relative border-1 border-limbus-600/30 rounded-sm text-limbus-500 w-60;
 }
 
 .select select {
@@ -15,4 +15,27 @@
 
 .select svg {
   @apply absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none;
+}
+
+.section {
+  @apply flex flex-col gap-2;
+}
+
+.settings {
+  @apply grid grid-cols-1 gap-2;
+}
+
+.input {
+  @apply appearance-none outline-none p-1 w-48
+    border-1 border-limbus-600/30 rounded-sm text-limbus-500;
+}
+
+.button {
+  @apply p-1 cursor-pointer text-limbus-500 w-8 h-8;
+}
+
+.button:hover {
+  @apply text-limbus-400 transition-colors duration-300;
+  filter: drop-shadow(0 0 2px var(--color-limbus-400));
+  transition: filter .3s ease;
 }

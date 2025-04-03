@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::path::PathBuf;
-use tauri::Manager;
-use tauri::path::BaseDirectory;
 use std::fs;
+use std::path::PathBuf;
+use tauri::path::BaseDirectory;
+use tauri::Manager;
 
 use crate::utils::Localization;
 
@@ -35,9 +35,7 @@ impl AppSettings {
 }
 
 fn get_config_path(app_handle: &tauri::AppHandle) -> Result<PathBuf, anyhow::Error> {
-    let config_dir = app_handle
-        .path()
-        .app_config_dir()?;
+    let config_dir = app_handle.path().app_config_dir()?;
     Ok(config_dir.join("config.json"))
 }
 
@@ -55,7 +53,10 @@ fn load_default_settings(app_handle: &tauri::AppHandle) -> Result<AppSettings, a
     println!("Loading default config from: {:?}", resource_path);
 
     if !resource_path.exists() {
-        eprintln!("Warning: default_config.json not found at {:?}. Using hardcoded default.", resource_path);
+        eprintln!(
+            "Warning: default_config.json not found at {:?}. Using hardcoded default.",
+            resource_path
+        );
         let default_settings = AppSettings::default();
         save_settings(app_handle, &default_settings)?;
         return Ok(default_settings);
@@ -74,11 +75,10 @@ pub fn load_settings(app_handle: &tauri::AppHandle) -> Result<AppSettings, anyho
 
     if config_path.exists() {
         let config_content = fs::read_to_string(&config_path)?;
-        let settings: AppSettings = serde_json::from_str(&config_content)
-            .unwrap_or_else(|e| {
-                eprintln!("Failed to parse config file: {}", e);
-                load_default_settings(app_handle).unwrap()
-            });
+        let settings: AppSettings = serde_json::from_str(&config_content).unwrap_or_else(|e| {
+            eprintln!("Failed to parse config file: {}", e);
+            load_default_settings(app_handle).unwrap()
+        });
         return Ok(settings);
     }
 
@@ -90,7 +90,10 @@ pub fn load_settings(app_handle: &tauri::AppHandle) -> Result<AppSettings, anyho
     load_default_settings(app_handle)
 }
 
-pub fn save_settings(app_handle: &tauri::AppHandle, settings: &AppSettings) -> Result<(), anyhow::Error> {
+pub fn save_settings(
+    app_handle: &tauri::AppHandle,
+    settings: &AppSettings,
+) -> Result<(), anyhow::Error> {
     let config_path = get_config_path(app_handle)?;
     let config_content = serde_json::to_string(settings)?;
     fs::write(&config_path, config_content)?;

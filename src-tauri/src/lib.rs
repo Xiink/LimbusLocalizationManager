@@ -1,8 +1,8 @@
-mod utils;
-mod steam;
 mod settings;
+mod steam;
+mod utils;
 
-use tauri::{Manager, State, Emitter};
+use tauri::{Emitter, Manager, State};
 use tokio::sync::Mutex;
 
 type SettingsState = Mutex<settings::AppSettings>;
@@ -13,7 +13,8 @@ async fn get_available_localizations(
 ) -> Result<utils::AvailableLocalizations, String> {
     let settings_guard = state.lock().await;
 
-    let active_source = settings_guard.selected_source
+    let active_source = settings_guard
+        .selected_source
         .as_ref()
         .ok_or_else(|| "No active source selected".to_string())?;
 
@@ -47,8 +48,7 @@ async fn update_settings(
 ) -> Result<(), String> {
     let mut settings_guard = state.lock().await;
 
-    settings::save_settings(&app_handle, &settings_guard)
-        .map_err(|e| e.to_string())?;
+    settings::save_settings(&app_handle, &settings_guard).map_err(|e| e.to_string())?;
 
     app_handle.emit("settings_updated", &new_settings).unwrap();
     *settings_guard = new_settings;
@@ -61,13 +61,18 @@ async fn install_localization(
     state: State<'_, SettingsState>,
     localization: utils::Localization,
 ) -> Result<(), String> {
-    utils::install_localization(localization.clone()).await?;
     let mut settings_guard = state.lock().await;
-    settings_guard.installed.insert(localization.id.clone(), localization);
-    settings::save_settings(&app_handle, &settings_guard)
-        .map_err(|e| e.to_string())?;
+    utils::install_localization(settings_guard.game_directory.clone(), localization.clone())
+        .await?;
 
-    app_handle.emit("settings_updated", settings_guard.clone()).unwrap();
+    settings_guard
+        .installed
+        .insert(localization.id.clone(), localization);
+    settings::save_settings(&app_handle, &settings_guard).map_err(|e| e.to_string())?;
+
+    app_handle
+        .emit("settings_updated", settings_guard.clone())
+        .unwrap();
     Ok(())
 }
 
@@ -77,13 +82,15 @@ async fn uninstall_localization(
     state: State<'_, SettingsState>,
     localization: utils::Localization,
 ) -> Result<(), String> {
-    utils::uninstall_localization(localization.clone()).await?;
     let mut settings_guard = state.lock().await;
+    utils::uninstall_localization(settings_guard.game_directory.clone(), localization.clone())
+        .await?;
     settings_guard.installed.remove(&localization.id);
-    settings::save_settings(&app_handle, &settings_guard)
-        .map_err(|e| e.to_string())?;
+    settings::save_settings(&app_handle, &settings_guard).map_err(|e| e.to_string())?;
 
-    app_handle.emit("settings_updated", settings_guard.clone()).unwrap();
+    app_handle
+        .emit("settings_updated", settings_guard.clone())
+        .unwrap();
     Ok(())
 }
 
@@ -97,9 +104,34 @@ async fn repair_localization(
     Ok(())
 }
 
+#[tauri::command]
+async fn set_game_directory(
+    app_handle: tauri::AppHandle,
+    state: State<'_, SettingsState>,
+    directory: Option<String>,
+) -> Result<(), String> {
+    let mut settings_guard = state.lock().await;
+
+    if let Some(ref directory) = directory {
+        if !steam::validate_game_directory(&directory).is_ok() {
+            return Err("Invalid game directory".to_string());
+        }
+    }
+
+    settings_guard.game_directory = directory;
+    settings::save_settings(&app_handle, &settings_guard).map_err(|e| e.to_string())?;
+
+    app_handle
+        .emit("settings_updated", settings_guard.clone())
+        .unwrap();
+
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             let app_handle = app.handle();
 
@@ -112,17 +144,17 @@ pub fn run() {
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(
-            tauri::generate_handler![
-                get_available_localizations, 
-                get_game_directory, 
-                launch_game,
-                get_settings,
-                update_settings,
-                install_localization,
-                uninstall_localization,
-                repair_localization,
-            ])
+        .invoke_handler(tauri::generate_handler![
+            get_available_localizations,
+            get_game_directory,
+            launch_game,
+            get_settings,
+            update_settings,
+            install_localization,
+            uninstall_localization,
+            repair_localization,
+            set_game_directory,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
