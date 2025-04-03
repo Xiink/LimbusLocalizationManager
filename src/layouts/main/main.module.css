@@ -1,15 +1,8 @@
 @reference "tailwindcss";
 @reference "../../globals.css";
 
-.main {
-  @apply flex flex-col h-screen max-h-screen 
-    rounded-lg bg-background text-limbus-50
-    overflow-hidden; 
-  box-shadow: 0 0 16px var(--color-limbus-900) inset;
-}
-
 .container {
-  @apply flex flex-1 min-h-0;
+  @apply flex flex-1;
 }
 
 .page {

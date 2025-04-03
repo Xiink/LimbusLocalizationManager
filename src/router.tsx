@@ -1,48 +1,55 @@
-import { type RouteObject, createMemoryRouter } from "react-router";
-import { MainLayout } from "@/layouts/main";
+import { Navigate, type RouteObject, createMemoryRouter } from "react-router";
+import { WindowLayout } from "@/layouts/window";
 import { HomePage } from "@/pages/home";
 import { LocalizationsPage } from "@/pages/localizations";
 import { SettingsPage } from "@/pages/settings";
 import { AboutPage } from "@/pages/about";
 import { LocalizationPage } from "@/pages/localization";
 import { rootStore } from "@/stores";
+import { MainLayout } from "./layouts/main";
 
 export const routes: RouteObject[] = [
   {
-    element: <MainLayout />,
-
-    // TODO: Add error handling
-    loader: async () => {
-      await rootStore.settings.loadSettings();
-    },
-
+    element: <WindowLayout />,
     children: [
       {
-        path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "/localizations",
-        element: <LocalizationsPage />,
+        element: <MainLayout />,
+        loader: async () => {
+          await rootStore.settings.loadSettings();
+        },
         children: [
           {
-            path: ":id",
-            element: <LocalizationPage />,
+            index: true,
+            element: <Navigate to="/home" />,
           },
           {
-            index: true,
-            element: <LocalizationPage />,
+            path: "/home",
+            element: <HomePage />,
           },
-        ],
-      },
-      {
-        path: "/settings",
-        element: <SettingsPage />,
-      },
-      {
-        path: "/about",
-        element: <AboutPage />,
-      },
+          {
+            path: "/localizations",
+            element: <LocalizationsPage />,
+            children: [
+              {
+                path: ":id",
+                element: <LocalizationPage />,
+              },
+              {
+                index: true,
+                element: <LocalizationPage />,
+              },
+            ],
+          },
+          {
+            path: "/settings",
+            element: <SettingsPage />,
+          },
+          {
+            path: "/about",
+            element: <AboutPage />,
+          },
+        ]
+      }
     ],
   },
 ];
