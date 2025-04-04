@@ -13,7 +13,9 @@ function Log({ progress }: { progress: Progress }) {
     case "unknown_localization":
       return (
         <span className={styles.log}>
-          {t("log.unknownLocalization", { localization: progress.localization })}
+          {t("log.unknownLocalization", {
+            localization: progress.localization,
+          })}
         </span>
       );
     case "up_to_date":
@@ -41,9 +43,10 @@ function Log({ progress }: { progress: Progress }) {
       return <span className={styles.log}>{t("log.startingGame")}</span>;
     case "finished":
       return <span className={styles.log}>{t("log.finished")}</span>;
-    default:
+    default: {
       const exhaustiveCheck: never = progress;
       return <span className={styles.log}>{exhaustiveCheck}</span>;
+    }
   }
 }
 

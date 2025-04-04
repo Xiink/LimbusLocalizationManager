@@ -1,17 +1,17 @@
 import { makeAutoObservable } from "mobx";
-import { SettingsStore } from "./settings";
+import { StateStore } from "./state";
 import { LocalizationsStore } from "./localizations";
 import { ActionsStore } from "./actions";
 
 export class RootStore {
-  public settings: SettingsStore;
+  public state: StateStore;
   public localizations: LocalizationsStore;
   public actions: ActionsStore;
 
   constructor() {
     makeAutoObservable(this);
 
-    this.settings = new SettingsStore();
+    this.state = new StateStore();
     this.localizations = new LocalizationsStore();
     this.actions = new ActionsStore();
   }

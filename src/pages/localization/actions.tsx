@@ -11,10 +11,10 @@ interface ActionsProps {
 }
 
 function Actions({ localization }: ActionsProps) {
-  const { settings, actions } = rootStore;
+  const { state, actions } = rootStore;
   const { t } = useTranslation();
 
-  const installedVersion = settings.installed?.[localization.id]?.version;
+  const installedVersion = state.installed?.[localization.id]?.version;
   const status = actions.getStatus(localization);
 
   return (
@@ -45,12 +45,20 @@ function Actions({ localization }: ActionsProps) {
         )}
 
         {status !== Status.Idle && (
-          <Grid color="#cf8d23" width={24} height={24} wrapperClass="shrink-0" />
+          <Grid
+            color="#cf8d23"
+            width={24}
+            height={24}
+            wrapperClass="shrink-0"
+          />
         )}
       </div>
 
       {installedVersion && installedVersion !== localization.version && (
-        <div className={styles.updates} title={`Update available: ${installedVersion} → ${localization.version}`}>
+        <div
+          className={styles.updates}
+          title={`Update available: ${installedVersion} → ${localization.version}`}
+        >
           {installedVersion} → {localization.version}
         </div>
       )}

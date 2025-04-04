@@ -5,8 +5,6 @@ use std::path::PathBuf;
 use tauri::path::BaseDirectory;
 use tauri::Manager;
 
-use crate::utils::Localization;
-
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct LocalizationSource {
     pub name: String,
@@ -15,7 +13,6 @@ pub struct LocalizationSource {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct AppSettings {
-    pub installed: HashMap<String, Localization>,
     pub sources: HashMap<String, LocalizationSource>,
     pub selected_source: Option<String>,
     pub game_directory: Option<String>,
@@ -25,7 +22,6 @@ pub struct AppSettings {
 impl AppSettings {
     pub fn default() -> Self {
         Self {
-            installed: HashMap::new(),
             sources: HashMap::new(),
             selected_source: None,
             game_directory: None,

@@ -14,33 +14,59 @@ export class ActionsStore {
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
 
-    listen("play:started", () => runInAction(() => {
-      this.progressLog.push({ type: "started" });
-    }));
+    listen("play:started", () =>
+      runInAction(() => {
+        this.progressLog.push({ type: "started" });
+      })
+    );
 
-    listen<string>("play:unknown_localization", (event) => runInAction(() => {
-      this.progressLog.push({ type: "unknown_localization", localization: event.payload });
-    }));
+    listen<string>("play:unknown_localization", (event) =>
+      runInAction(() => {
+        this.progressLog.push({
+          type: "unknown_localization",
+          localization: event.payload,
+        });
+      })
+    );
 
-    listen<string>("play:up_to_date", (event) => runInAction(() => {
-      this.progressLog.push({ type: "up_to_date", localization: event.payload });
-    }));
+    listen<string>("play:up_to_date", (event) =>
+      runInAction(() => {
+        this.progressLog.push({
+          type: "up_to_date",
+          localization: event.payload,
+        });
+      })
+    );
 
-    listen<string>("play:updating", (event) => runInAction(() => {
-      this.progressLog.push({ type: "updating", localization: event.payload });
-    }));
+    listen<string>("play:updating", (event) =>
+      runInAction(() => {
+        this.progressLog.push({
+          type: "updating",
+          localization: event.payload,
+        });
+      })
+    );
 
-    listen<string>("play:update_finished", (event) => runInAction(() => {
-      this.progressLog.push({ type: "update_finished", localization: event.payload });
-    }));
+    listen<string>("play:update_finished", (event) =>
+      runInAction(() => {
+        this.progressLog.push({
+          type: "update_finished",
+          localization: event.payload,
+        });
+      })
+    );
 
-    listen("play:starting_game", () => runInAction(() => {
-      this.progressLog.push({ type: "starting_game" });
-    }));
+    listen("play:starting_game", () =>
+      runInAction(() => {
+        this.progressLog.push({ type: "starting_game" });
+      })
+    );
 
-    listen("play:finished", () => runInAction(() => {
-      this.progressLog.push({ type: "finished" });
-    }));
+    listen("play:finished", () =>
+      runInAction(() => {
+        this.progressLog.push({ type: "finished" });
+      })
+    );
   }
 
   public async install(localization: Localization) {

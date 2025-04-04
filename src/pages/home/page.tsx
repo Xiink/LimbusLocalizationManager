@@ -5,21 +5,27 @@ import { observer } from "mobx-react-lite";
 import { rootStore } from "@/stores";
 import { cn } from "@/utils";
 import { Languages } from "lucide-react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 function Page() {
   const { t } = useTranslation();
-  const { actions } = rootStore;
+  const { actions, state } = rootStore;
+  const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <span className={styles.version}>
-          v{import.meta.env.VITE_APP_VERSION || "1.0.0"}
-          {" "}
-          <a href={import.meta.env.VITE_APP_SOURCE_URL} target="_blank" rel="noopener noreferrer">
-            {t("home.updateAvailable")}
-          </a>
+          v{import.meta.env.VITE_APP_VERSION || "1.0.0"}{" "}
+          {state.isUpdateAvailable && (
+            <a
+              href={import.meta.env.VITE_APP_SOURCE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+          >
+              {t("home.updateAvailable")}
+            </a>
+          )}
         </span>
 
         <NavLink to="/settings#interface-language" className={styles.language}>
@@ -28,25 +34,34 @@ function Page() {
       </div>
 
       <div className={styles.main}>
-        <span className={styles.title}>
-          {t("home.title")}
-        </span>
+        <span className={styles.title}>{t("home.title")}</span>
+
+        {!state.hasInstalledLocalizations && (
+          <span className={styles.subtitle}>
+            {t("home.noLocalizationsInstalled")}
+          </span>
+        )}
       </div>
 
       <div className={styles.actions}>
-        <button 
-          className={cn(styles.play, actions.startingGame && styles.loading)} 
-          onClick={playGame} 
+        <button
+          className={cn(styles.play, actions.startingGame && styles.loading)}
+          onClick={handleClick}
           disabled={actions.startingGame}
         >
-          {t("home.play")}
+          {state.hasInstalledLocalizations ? t("home.play") : t("home.add")}
         </button>
         <Console />
       </div>
     </div>
   );
 
-  async function playGame() {
+  async function handleClick() {
+    if (!state.hasInstalledLocalizations) {
+      navigate("/localizations");
+      return;
+    }
+
     await actions.updateAndPlay();
   }
 }

@@ -1,20 +1,21 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
-import { AppSettings } from "./models";
+import { AppState } from "./models";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import i18n, { languageNames } from "@/i18n";
 
-export class SettingsStore {
-  public settings: AppSettings | null = null;
+export class StateStore {
+  public state: AppState | null = null;
   public isLoading: boolean = false;
   public isSaving: boolean = false;
+  public latestVersion: string | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
 
-    listen<AppSettings>("settings_updated", (event) => {
+    listen<AppState>("app_state_updated", (event) => {
       runInAction(() => {
-        this.settings = event.payload;
+        this.state = event.payload;
       });
     });
 
@@ -26,10 +27,17 @@ export class SettingsStore {
           i18n.changeLanguage(this.settings.language);
         }
       }
-    )
+    );
   }
 
-  async loadSettings() {
+  async loadLatestVersion() {
+    const version = await invoke<string>("get_latest_version");
+    runInAction(() => {
+      this.latestVersion = version;
+    });
+  }
+
+  async loadState() {
     if (this.isLoading) {
       return;
     }
@@ -37,9 +45,9 @@ export class SettingsStore {
     this.isLoading = true;
 
     try {
-      const settings = await invoke<AppSettings>("get_settings");
+      const state = await invoke<AppState>("get_app_state");
       runInAction(() => {
-        this.settings = settings;
+        this.state = state;
       });
     } catch (error) {
       console.error(error);
@@ -73,10 +81,20 @@ export class SettingsStore {
     }
   }
 
-  public get language() {
+  public get isUpdateAvailable() {
     return (
-      this.settings?.language ?? i18n.language
-    ) as keyof typeof languageNames;
+      this.latestVersion !== null &&
+      this.latestVersion !== import.meta.env.VITE_APP_VERSION
+    );
+  }
+
+  public get settings() {
+    return this.state?.settings;
+  }
+
+  public get language() {
+    return (this.settings?.language ??
+      i18n.language) as keyof typeof languageNames;
   }
 
   public setLanguage(language: keyof typeof languageNames) {
@@ -106,7 +124,11 @@ export class SettingsStore {
   }
 
   public get installed() {
-    return this.settings?.installed;
+    return this.state?.installed_metadata?.installed ?? {};
+  }
+
+  public get hasInstalledLocalizations() {
+    return Object.keys(this.installed).length > 0;
   }
 
   public get gameDirectory() {
@@ -122,6 +144,6 @@ export class SettingsStore {
   }
 
   public get isReady() {
-    return this.settings !== null;
+    return this.state !== null;
   }
 }

@@ -10,7 +10,7 @@ function Main() {
         <Outlet />
       </div>
     </div>
-  )
+  );
 }
 
 export default Main;

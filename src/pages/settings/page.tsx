@@ -11,8 +11,7 @@ import { cn } from "@/utils";
 
 function Page() {
   const { t } = useTranslation();
-  const { settings } = rootStore;
-
+  const { state } = rootStore;
   const { hash } = useLocation();
 
   return (
@@ -20,15 +19,15 @@ function Page() {
       <h1 className="text-xl">{t("settings.title")}</h1>
 
       <div className={styles.settings}>
-        <div className={cn(styles.section, hash === "#interface-language" && styles.active)}>
-          <h2>
-            {t("settings.interfaceLanguage")}
-          </h2>
+        <div
+          className={cn(
+            styles.section,
+            hash === "#interface-language" && styles.active
+          )}
+        >
+          <h2>{t("settings.interfaceLanguage")}</h2>
           <div className={styles.select}>
-            <select
-              value={settings.language}
-              onChange={handleLanguageChange}
-            >
+            <select value={state.language} onChange={handleLanguageChange}>
               {Object.entries(languageNames).map(([key, name]) => (
                 <option key={key} value={key}>
                   {name}
@@ -43,10 +42,10 @@ function Page() {
           <h2>{t("settings.source")}</h2>
           <div className={styles.select}>
             <select
-              value={settings.selectedSource ?? undefined}
+              value={state.selectedSource ?? undefined}
               onChange={handleSourceChange}
             >
-              {Object.entries(settings.sources!).map(([key, source]) => (
+              {Object.entries(state.sources!).map(([key, source]) => (
                 <option key={key} value={key}>
                   {source.name}
                 </option>
@@ -62,16 +61,22 @@ function Page() {
             <input
               type="text"
               className={styles.input}
-              value={settings.gameDirectory ?? ""}
+              value={state.gameDirectory ?? ""}
               placeholder={t("settings.gameDirectoryDefault")}
               disabled
             />
-            {settings.gameDirectory === null ? (
-              <button className={styles.button} onClick={handleGameDirectoryPick}>
+            {state.gameDirectory === null ? (
+              <button
+                className={styles.button}
+                onClick={handleGameDirectoryPick}
+              >
                 <Folder />
               </button>
             ) : (
-              <button className={styles.button} onClick={handleGameDirectoryClear}>
+              <button
+                className={styles.button}
+                onClick={handleGameDirectoryClear}
+              >
                 <X />
               </button>
             )}
@@ -82,7 +87,7 @@ function Page() {
   );
 
   function handleSourceChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    settings.selectSource(event.target.value);
+    state.selectSource(event.target.value);
   }
 
   async function handleGameDirectoryPick() {
@@ -96,7 +101,7 @@ function Page() {
     }
 
     try {
-      await settings.setGameDirectory(directory);
+      await state.setGameDirectory(directory);
     } catch (error) {
       console.error(error);
       toastError(t("error.setGameDirectory"));
@@ -105,7 +110,7 @@ function Page() {
 
   async function handleGameDirectoryClear() {
     try {
-      await settings.setGameDirectory(null);
+      await state.setGameDirectory(null);
     } catch (error) {
       console.error(error);
       toastError(t("error.setGameDirectory"));
@@ -113,9 +118,7 @@ function Page() {
   }
 
   function handleLanguageChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    settings.setLanguage(
-      event.target.value as keyof typeof languageNames
-    );
+    state.setLanguage(event.target.value as keyof typeof languageNames);
   }
 }
 

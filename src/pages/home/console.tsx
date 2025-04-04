@@ -18,15 +18,13 @@ function Console() {
 
     ref.current.scrollTo({
       top: ref.current.scrollHeight,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }, [actions.progressLog.length, ref.current]);
 
   return (
     <div className={styles.console}>
-      <span className={styles.title}>
-        {t("home.console")}
-      </span>
+      <span className={styles.title}>{t("home.console")}</span>
       <div className={styles.container} ref={ref}>
         {actions.progressLog.map((log, index) => (
           <Log key={index} progress={log} />

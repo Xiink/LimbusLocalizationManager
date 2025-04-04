@@ -1,12 +1,13 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { Localization } from "./models";
+import { Localization, RemoteLocalizations } from "./models";
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 
 const getFlag = async (localization: Localization) => {
   try {
     const flag = await import(`../assets/flags/${localization.flag}.svg`);
     return { flag: flag.default, id: localization.id };
-  } catch (error) {
+  } catch {
     return {
       flag: `https://purecatamphetamine.github.io/country-flag-icons/3x2/${localization.flag}.svg`,
       id: localization.id,
@@ -22,6 +23,18 @@ export class LocalizationsStore {
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
+
+    listen<RemoteLocalizations>("remote_localizations_updated", (event) => {
+      runInAction(() => {
+        this.byId = event.payload.localizations.reduce(
+          (acc, localization) => {
+            acc[localization.id] = localization;
+            return acc;
+          },
+          {} as Record<string, Localization>
+        );
+      });
+    });
 
     this.fetchLocalizations();
   }
@@ -64,8 +77,6 @@ export class LocalizationsStore {
         this.isLoading = false;
       });
     }
-
-    
   }
 
   public get all() {

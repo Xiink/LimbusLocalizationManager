@@ -2,7 +2,11 @@
   "title": "Limbus Launcher",
   "home": {
     "play": "Обновить и играть",
-    "title": "Локализатор Limbus Company"
+    "title": "Локализатор Limbus Company",
+    "console": "Консоль",
+    "updateAvailable": "Доступно обновление!",
+    "noLocalizationsInstalled": "Нет ни одной локализации не установлено",
+    "add": "Добавить локализацию"
   },
   "settings": {
     "interfaceLanguage": "Язык интерфейса",
@@ -32,5 +36,15 @@
     "install": "Не удалось установить локализацию {{localization}}",
     "setGameDirectory": "Не удалось установить директорию игры",
     "somethingWentWrong": "Что-то пошло не так!"
+  },
+  "log": {
+    "started": "Проверяю обновления...",
+    "unknownLocalization": "Найдена неизвестная локализация '{{localization}}'",
+    "upToDate": "Локализация '{{localization}}' актуальна",
+    "updating": "Обновляю '{{localization}}'",
+    "updateFinished": "Локализация '{{localization}}' обновлена",
+    "startingGame": "Запускаю игру",
+    "finished": "Игра запущена",
+    "readChangeLog": "Что нового?"
   }
 }

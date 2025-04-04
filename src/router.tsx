@@ -18,7 +18,7 @@ export const routes: RouteObject[] = [
         element: <MainLayout />,
         errorElement: <ErrorBoundary />,
         loader: async () => {
-          await rootStore.settings.loadSettings();
+          await rootStore.state.loadState();
         },
         hydrateFallbackElement: <Fallback />,
         children: [
@@ -52,8 +52,8 @@ export const routes: RouteObject[] = [
             path: "/about",
             element: <AboutPage />,
           },
-        ]
-      }
+        ],
+      },
     ],
   },
 ];

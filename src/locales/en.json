@@ -4,7 +4,9 @@
     "play": "Update & Play",
     "title": "Limbus Company Localizer",
     "console": "Console",
-    "updateAvailable": "Update available!"
+    "updateAvailable": "Update available!",
+    "noLocalizationsInstalled": "No localizations installed",
+    "add": "Add localization"
   },
   "settings": {
     "interfaceLanguage": "Interface language",
@@ -43,7 +45,6 @@
     "updateFinished": "Localization '{{localization}}' updated",
     "startingGame": "Starting game",
     "finished": "Game started",
-  
     "readChangeLog": "Read change log"
   }
 }
