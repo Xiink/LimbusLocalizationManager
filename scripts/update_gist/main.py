@@ -97,7 +97,7 @@ def main() -> int:
         return 0
     
     content = json.dumps(
-        {"localizations": list(processed.values())},
+        {"localizations": list(processed.values()), "format_version": 1},
         indent=2,
         ensure_ascii=False,
     )
