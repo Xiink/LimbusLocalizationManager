@@ -51,6 +51,7 @@ pub struct Localization {
     pub description: String,  // Description in markdown
     pub authors: Vec<String>, // List of authors
     pub url: String,          // Url to zip archive
+    pub size: u64,            // Size of the zip archive to check integrity
     pub fonts: Vec<Font>,     // List of fonts to install
     pub format: Format,
 }
@@ -376,6 +377,14 @@ async fn download_localization_file(
     output_file
         .flush()
         .with_context(|| format!("Failed to flush file data"))?;
+
+    let size = fs::metadata(&download_path)
+        .with_context(|| format!("Failed to get file size"))?
+        .len();
+
+    if size != localization.size {
+        return Err(anyhow::anyhow!("File size mismatch"));
+    }
 
     info!(
         "Successfully downloaded localization from: {}",

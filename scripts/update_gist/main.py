@@ -19,7 +19,7 @@ class Localization(TypedDict):
     format: Literal["compatible", "new"]
 
 
-def get_latest_release(repo: str) -> tuple[str, str, str]:
+def get_latest_release(repo: str) -> tuple[str, str, str, int]:
     url = f"https://api.github.com/repos/{repo}/releases/latest"
     response = requests.get(url)
     response.raise_for_status()
@@ -28,17 +28,18 @@ def get_latest_release(repo: str) -> tuple[str, str, str]:
     version = content["tag_name"]
     description = content["body"]
     data_url = None
-
+    size = None
     for asset in content["assets"]:
         if asset["name"].endswith(".zip") and data_url is None:
             data_url = asset["browser_download_url"]
+            size = asset["size"]
         if asset["name"].lower() == "readme.md":
             description = requests.get(asset["browser_download_url"]).text
 
     if data_url is None:
         raise Exception(f"No data URL found for {repo}")
 
-    return version, description, data_url
+    return version, description, data_url, size
 
 
 def main() -> int:
@@ -62,7 +63,7 @@ def main() -> int:
     processed: dict[str, Localization] = {}
     for localization_id, data in localizations.items():
         try:
-            version, description, data_url = get_latest_release(data["repo"])
+            version, description, data_url, size = get_latest_release(data["repo"])
         except Exception as e:
             print(f"Error getting latest release for {localization_id}: {e}")
             if current_localizations.get(localization_id) is not None:
@@ -81,6 +82,7 @@ def main() -> int:
             "description": description,
             "authors": data["authors"],
             "url": data_url,
+            "size": size,
             "font": data["font"],
             "format": data["format"],
         }
