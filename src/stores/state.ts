@@ -2,6 +2,7 @@ import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { AppState } from "./models";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
+import { getVersion } from "@tauri-apps/api/app";
 import i18n, { languageNames } from "@/i18n";
 
 export class StateStore {
@@ -9,6 +10,7 @@ export class StateStore {
   public isLoading: boolean = false;
   public isSaving: boolean = false;
   public latestVersion: string | null = null;
+  public currentVersion: string | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -28,12 +30,32 @@ export class StateStore {
         }
       }
     );
+
+    this.loadVersions();
+  }
+
+  async loadVersions() {
+    await Promise.allSettled([
+      this.loadLatestVersion(),
+      this.loadCurrentVersion(),
+    ]);
   }
 
   async loadLatestVersion() {
     const version = await invoke<string>("get_latest_version");
     runInAction(() => {
-      this.latestVersion = version;
+      if (version.startsWith("v")) {
+        this.latestVersion = version.slice(1);
+      } else {
+        this.latestVersion = version;
+      }
+    });
+  }
+
+  async loadCurrentVersion() {
+    const version = await getVersion();
+    runInAction(() => {
+      this.currentVersion = version;
     });
   }
 
@@ -84,7 +106,8 @@ export class StateStore {
   public get isUpdateAvailable() {
     return (
       this.latestVersion !== null &&
-      this.latestVersion !== import.meta.env.VITE_APP_VERSION
+      this.currentVersion !== null &&
+      this.latestVersion !== this.currentVersion
     );
   }
 

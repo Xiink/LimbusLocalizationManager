@@ -46,5 +46,8 @@
     "startingGame": "Запускаю игру",
     "finished": "Игра запущена",
     "readChangeLog": "Что нового?"
+  },
+  "about": {
+    "title": "О программе"
   }
 }

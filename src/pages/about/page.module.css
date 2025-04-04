@@ -1,0 +1,6 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.container {
+  @apply flex-1 flex;
+}

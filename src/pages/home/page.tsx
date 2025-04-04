@@ -15,18 +15,20 @@ function Page() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <span className={styles.version}>
-          v{import.meta.env.VITE_APP_VERSION || "1.0.0"}{" "}
-          {state.isUpdateAvailable && (
-            <a
-              href={import.meta.env.VITE_APP_SOURCE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-          >
-              {t("home.updateAvailable")}
-            </a>
-          )}
-        </span>
+        {state.currentVersion && (
+          <span className={styles.version}>
+            v{state.currentVersion}{" "}
+            {state.isUpdateAvailable && (
+              <a
+                href={import.meta.env.VITE_APP_RELEASE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                {t("home.updateAvailable")}
+              </a>
+            )}
+          </span>
+        )}
 
         <NavLink to="/settings#interface-language" className={styles.language}>
           <Languages />

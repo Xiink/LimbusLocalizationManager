@@ -46,5 +46,8 @@
     "startingGame": "Starting game",
     "finished": "Game started",
     "readChangeLog": "Read change log"
+  },
+  "about": {
+    "title": "About"
   }
 }
