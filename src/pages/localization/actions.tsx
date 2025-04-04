@@ -50,7 +50,7 @@ function Actions({ localization }: ActionsProps) {
       </div>
 
       {installedVersion && installedVersion !== localization.version && (
-        <div className={styles.updates}>
+        <div className={styles.updates} title={`Update available: ${installedVersion} → ${localization.version}`}>
           {installedVersion} → {localization.version}
         </div>
       )}

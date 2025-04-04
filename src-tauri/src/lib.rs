@@ -156,7 +156,7 @@ async fn update_and_play(
         .get(active_source)
         .ok_or_else(|| "No active source selected".to_string())?
         .url;
-    
+
     let remote_localizations = utils::fetch_available_localizations(source_url).await?;
     let localizations_to_update: Vec<_> = settings_guard.installed.values()
         .filter_map(|localization| {

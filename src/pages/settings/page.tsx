@@ -6,18 +6,24 @@ import { rootStore } from "@/stores";
 import { open } from "@tauri-apps/plugin-dialog";
 import { toastError } from "@/components/toast/toast";
 import { languageNames } from "@/i18n";
+import { useLocation } from "react-router";
+import { cn } from "@/utils";
 
 function Page() {
   const { t } = useTranslation();
   const { settings } = rootStore;
+
+  const { hash } = useLocation();
 
   return (
     <div className={styles.container}>
       <h1 className="text-xl">{t("settings.title")}</h1>
 
       <div className={styles.settings}>
-        <div className={styles.section}>
-          <h2>{t("settings.interfaceLanguage")}</h2>
+        <div className={cn(styles.section, hash === "#interface-language" && styles.active)}>
+          <h2>
+            {t("settings.interfaceLanguage")}
+          </h2>
           <div className={styles.select}>
             <select
               value={settings.language}

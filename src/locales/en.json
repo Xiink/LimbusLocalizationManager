@@ -2,7 +2,9 @@
   "title": "Limbus Launcher",
   "home": {
     "play": "Update & Play",
-    "title": "Limbus Company Localizer"
+    "title": "Limbus Company Localizer",
+    "console": "Console",
+    "updateAvailable": "Update available!"
   },
   "settings": {
     "interfaceLanguage": "Interface language",
@@ -32,5 +34,16 @@
     "install": "Failed to install localization {{localization}}",
     "setGameDirectory": "Failed to set game directory",
     "somethingWentWrong": "Something went wrong!"
+  },
+  "log": {
+    "started": "Looking for updates...",
+    "unknownLocalization": "Found unknown localization '{{localization}}'",
+    "upToDate": "Localization '{{localization}}' is up to date",
+    "updating": "Updating localization '{{localization}}'",
+    "updateFinished": "Localization '{{localization}}' updated",
+    "startingGame": "Starting game",
+    "finished": "Game started",
+  
+    "readChangeLog": "Read change log"
   }
 }

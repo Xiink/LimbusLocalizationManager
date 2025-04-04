@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.console {
+  @apply w-full h-24 p-2
+    bg-black/10 rounded-md
+    flex flex-col
+  ;
+}
+
+.title {
+  @apply text-limbus-300 shrink-0 text-xs;
+}
+
+.container {
+  @apply flex-1 flex flex-col justify-start items-start
+    overflow-y-auto
+  ;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.container::-webkit-scrollbar {
+  @apply hidden;
+}

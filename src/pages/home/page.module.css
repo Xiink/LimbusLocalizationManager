@@ -2,13 +2,84 @@
 @reference "../../globals.css";
 
 .container {
-  @apply relative flex-1 flex flex-col items-center justify-center gap-4;
+  @apply relative flex-1 flex flex-col items-center gap-4;
 }
 
 .play {
-  @apply text-limbus-500 px-4 py-2 rounded-md border-1 border-limbus-500
-    hover:bg-limbus-500 hover:text-white transition-colors
-    cursor-pointer;
+  @apply h-8 w-full
+    flex items-center justify-center
+    cursor-pointer uppercase font-bold
+    text-limbus-500
+  ;
+
+  background: linear-gradient(90deg, transparent 0%,rgba(59, 27, 13, 0.5) 20%, rgba(59, 27, 13, 0.5) 80%, transparent 100%);
+  color: theme('colors.limbus.500');
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+.play:disabled {
+  @apply cursor-not-allowed;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.logo {
+  @apply w-32 h-32;
+}
+
+.main {
+  @apply flex flex-1 flex-col items-center justify-center w-full text-center;
+}
+
+.title {
+  @apply text-limbus-500 text-2xl;
+  filter: drop-shadow(0 0 3px var(--color-limbus-500));
+}
+
+.subtitle {
+  @apply text-limbus-500 text-base;
+}
+
+.actions {
+  @apply flex flex-col items-center justify-center gap-4 w-full;
+}
+
+.header {
+  @apply flex items-center gap-2 w-full px-1;
+}
+
+.version {
+  @apply text-limbus-400 text-sm;
+}
+
+.version a {
+  @apply text-limbus-500 lowercase transition-all duration-300 cursor-pointer;
+}
+
+.version a:hover {
+  @apply text-limbus-400;
+}
+
+.version a:active {
+  @apply text-limbus-300;
+}
+
+.language {
+  @apply text-limbus-500 p-1 ml-auto;
+}
+
+.language svg {
+  @apply w-5 h-5;
+}
+
+.language:hover {
+  @apply text-limbus-400;
+}

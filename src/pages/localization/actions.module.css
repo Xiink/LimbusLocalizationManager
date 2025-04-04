@@ -27,5 +27,5 @@
 }
 
 .updates {
-  @apply text-xs text-limbus-500;
+  @apply text-xs text-limbus-500 max-w-24 truncate cursor-help;
 }

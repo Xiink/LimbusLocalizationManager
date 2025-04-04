@@ -1,15 +1,46 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { Localization, Status } from "./models";
+import { Localization, Progress, Status } from "./models";
 import { invoke } from "@tauri-apps/api/core";
 import i18n from "@/i18n";
 import { toastError, toastSuccess } from "@/components/toast/toast";
 import { computedFn } from "mobx-utils";
+import { listen } from "@tauri-apps/api/event";
 
 export class ActionsStore {
   public status: Record<string, Status> = {};
+  public startingGame: boolean = false;
+  public progressLog: Progress[] = [];
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
+
+    listen("play:started", () => runInAction(() => {
+      this.progressLog.push({ type: "started" });
+    }));
+
+    listen<string>("play:unknown_localization", (event) => runInAction(() => {
+      this.progressLog.push({ type: "unknown_localization", localization: event.payload });
+    }));
+
+    listen<string>("play:up_to_date", (event) => runInAction(() => {
+      this.progressLog.push({ type: "up_to_date", localization: event.payload });
+    }));
+
+    listen<string>("play:updating", (event) => runInAction(() => {
+      this.progressLog.push({ type: "updating", localization: event.payload });
+    }));
+
+    listen<string>("play:update_finished", (event) => runInAction(() => {
+      this.progressLog.push({ type: "update_finished", localization: event.payload });
+    }));
+
+    listen("play:starting_game", () => runInAction(() => {
+      this.progressLog.push({ type: "starting_game" });
+    }));
+
+    listen("play:finished", () => runInAction(() => {
+      this.progressLog.push({ type: "finished" });
+    }));
   }
 
   public async install(localization: Localization) {
@@ -83,6 +114,26 @@ export class ActionsStore {
     } finally {
       runInAction(() => {
         this.status[localization.id] = Status.Idle;
+      });
+    }
+  }
+
+  public async updateAndPlay() {
+    if (this.startingGame) {
+      throw new Error("Game is already starting");
+    }
+
+    this.startingGame = true;
+    this.progressLog = [];
+
+    try {
+      await invoke("update_and_play");
+    } catch (error) {
+      console.error(error);
+      toastError(i18n.t("error.updateAndPlay"));
+    } finally {
+      runInAction(() => {
+        this.startingGame = false;
       });
     }
   }

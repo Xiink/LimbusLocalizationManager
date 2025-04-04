@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.log {
+  @apply text-limbus-500 text-wrap shrink-0 text-sm;
+}
+
+.log a {
+  @apply text-limbus-300 transition-colors duration-300 lowercase underline;
+}
+
+.log a:hover {
+  @apply text-limbus-200;
+}
+

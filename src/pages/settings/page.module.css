@@ -39,3 +39,7 @@
   filter: drop-shadow(0 0 2px var(--color-limbus-400));
   transition: filter .3s ease;
 }
+
+.active h2 {
+  @apply underline;
+}

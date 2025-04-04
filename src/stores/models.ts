@@ -49,3 +49,23 @@ export const Status = {
 } as const;
 
 export type Status = (typeof Status)[keyof typeof Status];
+
+export type Progress = {
+  type: "started"
+} | {
+  type: "unknown_localization",
+  localization: string;
+} | {
+  type: "up_to_date",
+  localization: string;
+} | {
+  type: "updating",
+  localization: string;
+} | {
+  type: "update_finished",
+  localization: string;
+} | {
+  type: "starting_game",
+} | {
+  type: "finished",
+}
