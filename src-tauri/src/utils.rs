@@ -19,7 +19,7 @@ const REPO_NAME: &str = "kimght/LimbusLocalizationInstaller";
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct AvailableLocalizations {
-    version: u32,
+    format_version: u32,
     localizations: Vec<Localization>,
 }
 
