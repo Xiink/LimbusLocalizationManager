@@ -524,10 +524,18 @@ async fn update_and_play(
             );
     }
 
-    state.lock().await.save_installed_metadata().map_err(|e| {
+    let state_guard = state.lock().await;
+    state_guard.save_installed_metadata().map_err(|e| {
         error!("Failed to save installed metadata: {:?}", e);
         e.to_string()
     })?;
+
+    app_handle
+        .emit("app_state_updated", state_guard.clone())
+        .map_err(|e| {
+            error!("Failed to emit app state updated: {:?}", e);
+            e.to_string()
+        })?;
 
     app_handle.emit("play:starting_game", ()).unwrap();
     steam::launch_game().map_err(|e| {

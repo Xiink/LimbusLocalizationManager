@@ -16,11 +16,12 @@ function Actions({ localization }: ActionsProps) {
 
   const installedVersion = state.installed?.[localization.id]?.version;
   const status = actions.getStatus(localization);
+  const isIdle = status === Status.Idle && !actions.startingGame;
 
   return (
     <div className={styles.container}>
       <div className={styles.controls}>
-        {status === Status.Idle && (
+        {isIdle && (
           <>
             {!installedVersion && (
               <button onClick={handleInstall} title={t("localization.add")}>
@@ -44,7 +45,7 @@ function Actions({ localization }: ActionsProps) {
           </>
         )}
 
-        {status !== Status.Idle && (
+        {!isIdle && (
           <Grid
             color="#cf8d23"
             width={24}
@@ -54,7 +55,7 @@ function Actions({ localization }: ActionsProps) {
         )}
       </div>
 
-      {installedVersion && installedVersion !== localization.version && (
+      {isIdle && installedVersion && installedVersion !== localization.version && (
         <div
           className={styles.updates}
           title={`Update available: ${installedVersion} → ${localization.version}`}
