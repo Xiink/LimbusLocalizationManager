@@ -83,7 +83,7 @@ def main() -> int:
             "authors": data["authors"],
             "url": data_url,
             "size": size,
-            "font": data["font"],
+            "fonts": data["fonts"],
             "format": data["format"],
         }
 
