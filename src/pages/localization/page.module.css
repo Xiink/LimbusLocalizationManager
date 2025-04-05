@@ -57,6 +57,22 @@
   @apply list-decimal list-inside;
 }
 
+.description a {
+  @apply text-limbus-500 transition-all duration-300 cursor-pointer;
+}
+
+.description a:hover {
+  @apply text-limbus-400;
+}
+
+.description a:active {
+  @apply text-limbus-300;
+}
+
+.description hr {
+  @apply my-2;
+}
+
 .description p {
   @apply mb-2;
 }

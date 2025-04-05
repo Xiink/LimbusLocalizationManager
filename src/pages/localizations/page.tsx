@@ -43,7 +43,7 @@ function Page() {
             <img
               src={localizations.flags[localization.id]}
               alt={localization.name}
-              className="w-6 h-4"
+              className="w-6 h-4 shrink-0"
             />
             <span>{localization.name}</span>
           </NavLink>
