@@ -35,7 +35,8 @@
   "error": {
     "install": "Failed to install localization {{localization}}",
     "setGameDirectory": "Failed to set game directory",
-    "somethingWentWrong": "Something went wrong!"
+    "somethingWentWrong": "Something went wrong!",
+    "updateAndPlay": "Update failed!"
   },
   "log": {
     "started": "Looking for updates...",
@@ -48,6 +49,14 @@
     "readChangeLog": "Read change log"
   },
   "about": {
-    "title": "About"
+    "title": "About",
+    "credits": "Credits",
+    "developers": "Developers",
+    "translators": "Translators",
+    "links": "Useful links",
+    "source": "Source code",
+    "issues": "Support",
+    "developer": "Developer",
+    "translator": "Translator"
   }
 }

@@ -5,7 +5,7 @@
     "title": "Локализатор Limbus Company",
     "console": "Консоль",
     "updateAvailable": "Доступно обновление!",
-    "noLocalizationsInstalled": "Нет ни одной локализации не установлено",
+    "noLocalizationsInstalled": "Ни одной локализации не установлено",
     "add": "Добавить локализацию"
   },
   "settings": {
@@ -35,7 +35,8 @@
   "error": {
     "install": "Не удалось установить локализацию {{localization}}",
     "setGameDirectory": "Не удалось установить директорию игры",
-    "somethingWentWrong": "Что-то пошло не так!"
+    "somethingWentWrong": "Что-то пошло не так!",
+    "updateAndPlay": "Ошибка при обновлении локализации!"
   },
   "log": {
     "started": "Проверяю обновления...",
@@ -48,6 +49,12 @@
     "readChangeLog": "Что нового?"
   },
   "about": {
-    "title": "О программе"
+    "title": "О программе",
+    "credits": "Авторы",
+    "links": "Ссылки",
+    "source": "Исходный код",
+    "issues": "Поддержка",
+    "developer": "Разработчик",
+    "translator": "Переводчик"
   }
 }

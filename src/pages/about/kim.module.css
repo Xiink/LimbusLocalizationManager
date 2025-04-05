@@ -1,0 +1,22 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.kim {
+  @apply 
+    absolute top-0 right-0 w-24 h-24 
+    rounded-lg border-1 border-limbus-500/30
+    transition-transform duration-50
+    select-none cursor-pointer
+  ;
+}
+
+.explosion {
+  @apply
+    absolute top-0 right-0 w-24 h-24
+    select-none cursor-pointer z-10
+  ;
+}
+
+.bounce {
+  transform: scale(1.05);
+}

@@ -20,7 +20,7 @@ function Page() {
             v{state.currentVersion}{" "}
             {state.isUpdateAvailable && (
               <a
-                href={import.meta.env.VITE_APP_RELEASE_URL}
+                href={`${import.meta.env.VITE_APP_REPO_URL}/releases/latest`}
                 target="_blank"
                 rel="noopener noreferrer"
             >

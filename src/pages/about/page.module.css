@@ -2,5 +2,25 @@
 @reference "../../globals.css";
 
 .container {
-  @apply flex-1 flex;
+  @apply flex-1 flex relative flex flex-col gap-4;
+}
+
+.section {
+  @apply flex flex-col gap-2;
+}
+
+.list {
+  @apply flex flex-col gap-2 list-disc list-inside;
+}
+
+.link {
+  @apply text-limbus-500 transition-all duration-300 cursor-pointer;
+}
+
+.link:hover {
+  @apply text-limbus-400;
+}
+
+.link:active {
+  @apply text-limbus-300;
 }
