@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    limbus_launcher_lib::run()
+    limbus_localization_installer_lib::run()
 }
