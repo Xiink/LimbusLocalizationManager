@@ -38,7 +38,7 @@ pub enum Format {
 pub struct Font {
     pub url: String,  // Url to font file
     pub hash: String, // Md5 hash of the font file
-    pub name: String, // Filename in Fonts/ folder
+    pub name: String, // Filename in Font/ folder
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -210,11 +210,11 @@ pub async fn install_fonts_for_localization(
             .join("LimbusCompany_Data")
             .join("Lang")
             .join(&localization.id)
-            .join("Fonts"); // Folder name is "Fonts"
+            .join("Font");
 
         fs::create_dir_all(&target_fonts_dir).with_context(|| {
             format!(
-                "Failed to create target Fonts directory {:?}",
+                "Failed to create target Font directory {:?}",
                 target_fonts_dir
             )
         })?;

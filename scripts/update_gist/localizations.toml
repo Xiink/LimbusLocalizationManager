@@ -18,6 +18,7 @@ authors = ["kimght", "DAFTPUSiK", "x1bViolet", "Babkaebpmg", "KJHater"]
 flag = "RU"
 icon = "https://github.com/kimght/LimbusCompanyRuMTL/raw/main/data/images/logo.png"
 format = "new"
+localization_asset = "localize_files.zip"
 
 [[ru-mtl.fonts]]
 url = "https://github.com/kimght/LimbusFonts/releases/download/v1.3.0/merged_font.ttf"
