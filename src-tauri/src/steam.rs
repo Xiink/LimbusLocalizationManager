@@ -2,6 +2,7 @@ use anyhow::{Context, Error};
 use std::io;
 use std::path::PathBuf;
 use std::process::Command;
+use sysinfo::System;
 
 const LIMBUS_STEAM_ID: u32 = 1973530;
 
@@ -148,4 +149,15 @@ pub fn get_game_directory() -> Result<PathBuf, Error> {
     }
 
     Err(anyhow::anyhow!("Limbus not found in any Steam library"))
+}
+
+pub fn is_game_running() -> bool {
+    let system = System::new_all();
+
+    system.processes().iter().any(|(_, process)| {
+        process
+            .name()
+            .to_str()
+            .map_or(false, |name| name.starts_with("LimbusCompany.e"))
+    })
 }

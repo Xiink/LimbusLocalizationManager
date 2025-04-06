@@ -198,6 +198,10 @@ async fn install_localization(
     localization_lock: State<'_, LocalizationLocks>,
     localization: utils::Localization,
 ) -> Result<(), String> {
+    if steam::is_game_running() {
+        return Err("Game is running".to_string());
+    }
+
     let game_path;
     let source;
 
@@ -284,6 +288,10 @@ async fn uninstall_localization(
     localization_lock: State<'_, LocalizationLocks>,
     localization: utils::Localization,
 ) -> Result<(), String> {
+    if steam::is_game_running() {
+        return Err("Game is running".to_string());
+    }
+
     let game_path;
 
     {
@@ -385,6 +393,11 @@ async fn update_and_play(
     remote_localizations_state: State<'_, RemoteLocalizationsMutex>,
 ) -> Result<(), String> {
     app_handle.emit("play:started", ()).unwrap();
+
+    if steam::is_game_running() {
+        app_handle.emit("play:game_running", ()).unwrap();
+        return Err("Game is already running".to_string());
+    }
 
     let active_source;
     let source_url;
@@ -550,6 +563,12 @@ pub fn run() {
     env_logger::init();
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+            let _ = app
+                .get_webview_window("main")
+                .expect("no main window")
+                .set_focus();
+        }))
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             let app_handle = app.handle();

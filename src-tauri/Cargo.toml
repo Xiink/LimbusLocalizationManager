@@ -35,6 +35,10 @@ toml = "0.8.20"
 md-5 = "0.10.6"
 futures = "0.3.31"
 dashmap = "6.1.0"
+sysinfo = "0.34.2"
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.51.0"
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-single-instance = "2"
