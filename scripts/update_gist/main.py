@@ -40,12 +40,10 @@ def get_latest_release(repo: str, localization_asset: str | None = None) -> tupl
         if localization_asset is None:
             data_url = asset["browser_download_url"]
             size = asset["size"]
-            break
 
         if asset["name"].lower() == localization_asset:
             data_url = asset["browser_download_url"]
             size = asset["size"]
-            break
 
     if data_url is None:
         raise Exception(f"No data URL found for {repo}")
