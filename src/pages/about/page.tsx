@@ -31,7 +31,7 @@ function Page() {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={import.meta.env.VITE_APP_ISSUES_URL}
+              href={`${import.meta.env.VITE_APP_REPO_URL}/issues`}
               className="lnk"
             >
               {t("about.issues")}
