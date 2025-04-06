@@ -35,10 +35,8 @@ export class StateStore {
   }
 
   async loadVersions() {
-    await Promise.allSettled([
-      this.loadLatestVersion(),
-      this.loadCurrentVersion(),
-    ]);
+    await this.loadCurrentVersion();
+    await this.loadLatestVersion();
   }
 
   async loadLatestVersion() {

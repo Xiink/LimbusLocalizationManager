@@ -15,7 +15,7 @@ use tempfile::Builder;
 use zip::ZipArchive;
 
 const METADATA_FILE_NAME: &str = "llc_config.toml";
-const REPO_NAME: &str = "kimght/LimbusLocalizationInstaller";
+const REPO_NAME: &str = "kimght/LimbusLocalizationManager";
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct AvailableLocalizations {
@@ -319,6 +319,7 @@ pub async fn get_latest_version() -> Result<String, anyhow::Error> {
             "https://api.github.com/repos/{}/releases/latest",
             REPO_NAME
         ))
+        .header("User-Agent", "Limbus Launcher")
         .send()
         .await
         .with_context(|| format!("Failed to get latest version"))?;
@@ -336,6 +337,7 @@ pub async fn get_latest_version() -> Result<String, anyhow::Error> {
         .as_str()
         .ok_or_else(|| anyhow::anyhow!("Tag name is not a string"))?;
 
+    info!("Latest version: {}", tag_name);
     Ok(tag_name.to_string())
 }
 
