@@ -61,6 +61,12 @@ function Kim() {
   useEffect(() => {
     if (exploded) return;
 
+    const handleMouseLeave = () => {
+      if (!ref.current) return;
+      if (isExploding.current) return;
+      ref.current.src = KimC;
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!ref.current) return;
       if (isExploding.current) return;
@@ -90,8 +96,12 @@ function Kim() {
     };
 
     document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
 
-    return () => document.removeEventListener("mousemove", handleMouseMove);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
   }, [exploded]);
 
   if (exploded) {
