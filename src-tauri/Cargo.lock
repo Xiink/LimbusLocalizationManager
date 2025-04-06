@@ -2328,8 +2328,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "limbus-localization-installer"
-version = "0.3.0"
+name = "limbus-localization-manager"
+version = "0.4.0"
 dependencies = [
  "anyhow",
  "dashmap",
