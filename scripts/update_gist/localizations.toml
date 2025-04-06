@@ -1,6 +1,6 @@
 [ru-crescent]
 repo = "Crescent-Corporation/LimbusCompanyBusRUS"
-name = "Русский (Crescent)"
+name = "CresCorp"
 authors = ["..."]
 flag = "RU"
 icon = "https://github.com/Crescent-Corporation/LimbusCompanyBusRUS/raw/LC_branch_ORIGINAL/Localize/Readme/Crescent_Button.png"
@@ -13,7 +13,7 @@ name = "pretendard_light.otf"
 
 [ru-mtl]
 repo = "kimght/LimbusCompanyRuMTL"
-name = "Русский (MTL)"
+name = "MTL"
 authors = ["kimght", "DAFTPUSiK", "x1bViolet", "Babkaebpmg", "KJHater"]
 flag = "RU"
 icon = "https://github.com/kimght/LimbusCompanyRuMTL/raw/main/data/images/logo.png"
