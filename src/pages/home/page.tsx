@@ -36,6 +36,8 @@ function Page() {
       </div>
 
       <div className={styles.main}>
+        <img src="/star.png" alt="logo" className={styles.logo} />
+
         <span className={styles.title}>{t("home.title")}</span>
 
         {!state.hasInstalledLocalizations && (

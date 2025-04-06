@@ -31,12 +31,12 @@
   }
 }
 
-.logo {
-  @apply w-32 h-32;
+.main {
+  @apply flex flex-1 flex-col items-center justify-center gap-2 w-full text-center;
 }
 
-.main {
-  @apply flex flex-1 flex-col items-center justify-center w-full text-center;
+.logo {
+  @apply w-24 h-24 shrink-0;
 }
 
 .title {
