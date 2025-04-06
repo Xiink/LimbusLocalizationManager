@@ -62,7 +62,15 @@
 }
 
 .item span {
-  @apply truncate;
+  @apply truncate text-limbus-200;
+}
+
+.active span {
+  @apply text-limbus-50;
+}
+
+.active img {
+  @apply !opacity-100;
 }
 
 .item:last-child {

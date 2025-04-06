@@ -3,6 +3,7 @@ import { rootStore } from "@/stores";
 import styles from "./page.module.css";
 import { NavLink, Outlet, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/utils";
 
 function Page() {
   const { localizations } = rootStore;
@@ -38,7 +39,9 @@ function Page() {
           <NavLink
             key={localization.id}
             to={`/localizations/${localization.id}`}
-            className={styles.item}
+            className={({ isActive }) =>
+              cn(styles.item, isActive && styles.active)
+            }
           >
             <img
               src={localizations.flags[localization.id]}
