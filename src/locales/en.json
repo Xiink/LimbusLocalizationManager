@@ -1,8 +1,8 @@
 {
-  "title": "Limbus Launcher",
+  "title": "Limbus Localization Manager",
   "home": {
     "play": "Update & Play",
-    "title": "Limbus Company Localizer",
+    "title": "Limbus Localization Manager",
     "console": "Console",
     "updateAvailable": "Update available!",
     "noLocalizationsInstalled": "No localizations installed",

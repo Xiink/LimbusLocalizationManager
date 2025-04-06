@@ -18,12 +18,22 @@ function Page() {
         <h2 className="text-lg">{t("about.links")}</h2>
         <ul className={styles.list}>
           <li>
-            <a href={import.meta.env.VITE_APP_REPO_URL} className={styles.link}>
+            <a 
+              target="_blank"
+              rel="noopener noreferrer"
+              href={import.meta.env.VITE_APP_REPO_URL}
+              className="lnk"
+            >
               {t("about.source")}
             </a>
           </li>
           <li>
-            <a href={import.meta.env.VITE_APP_REPO_URL} className={styles.link}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={import.meta.env.VITE_APP_ISSUES_URL}
+              className="lnk"
+            >
               {t("about.issues")}
             </a>
           </li>
@@ -31,6 +41,10 @@ function Page() {
       </div>
 
       <Kim />
+
+      <span className="absolute bottom-1 right-1 text-xs text-limbus-600 select-none italic">
+        {`/pmg/`}
+      </span>
     </div>
   );
 }

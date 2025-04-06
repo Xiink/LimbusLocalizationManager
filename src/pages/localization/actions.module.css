@@ -10,20 +10,7 @@
 }
 
 .controls button {
-  @apply flex items-center px-1 py-1 rounded-sm text-limbus-500 cursor-pointer;
-}
-
-.controls button:hover {
-  filter: drop-shadow(0 0 4px var(--color-limbus-300));
-  transition: filter .3s ease;
-}
-
-.controls button:hover svg {
-  @apply text-limbus-300 transition-colors duration-300;
-}
-
-.controls button:active svg {
-  @apply text-limbus-100 transition-colors duration-300;
+  @apply flex items-center px-1 py-1 rounded-sm btn btn-lg;
 }
 
 .updates {

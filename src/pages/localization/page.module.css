@@ -22,23 +22,11 @@
 }
 
 .info span {
-  @apply text-xs text-limbus-500 overflow-x-auto text-nowrap shrink-1 min-w-0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.info span::-webkit-scrollbar {
-  @apply hidden;
+  @apply text-xs text-limbus-500 overflow-x-auto text-nowrap shrink-1 min-w-0 no-scrollbar;
 }
 
 .description {
-  @apply break-all h-full overflow-y-scroll;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.description::-webkit-scrollbar {
-  @apply hidden;
+  @apply break-all h-full overflow-y-scroll no-scrollbar;
 }
 
 .description h1 {
@@ -58,15 +46,7 @@
 }
 
 .description a {
-  @apply text-limbus-500 transition-all duration-300 cursor-pointer;
-}
-
-.description a:hover {
-  @apply text-limbus-400;
-}
-
-.description a:active {
-  @apply text-limbus-300;
+  @apply lnk;
 }
 
 .description hr {
@@ -76,4 +56,3 @@
 .description p {
   @apply mb-2;
 }
-

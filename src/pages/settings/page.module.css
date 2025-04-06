@@ -31,13 +31,7 @@
 }
 
 .button {
-  @apply p-1 cursor-pointer text-limbus-500 w-8 h-8;
-}
-
-.button:hover {
-  @apply text-limbus-400 transition-colors duration-300;
-  filter: drop-shadow(0 0 2px var(--color-limbus-400));
-  transition: filter .3s ease;
+  @apply p-1 w-8 h-8 btn btn-lg;
 }
 
 .active h2 {

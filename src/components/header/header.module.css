@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+@reference "../../globals.css";
+
+.header {
+  @apply flex items-center justify-between px-2 py-1
+    border-b border-limbus-600/30 h-[36px];
+}
+
+.header span {
+  @apply text-limbus-500;
+}
+
+.controls {
+  @apply flex items-center h-full text-limbus-500;
+}
+
+.controls button {
+  @apply p-1 btn btn-lg;
+}

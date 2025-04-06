@@ -2,7 +2,7 @@ import { rootStore } from "@/stores";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router";
 import styles from "./page.module.css";
-import Markdown from "react-markdown";
+import Markdown from "@/components/markdown/markdown";
 import Actions from "./actions";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";

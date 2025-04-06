@@ -17,37 +17,37 @@ const facingDirections = [
   {
     src: KimLL,
     from: 0,
-    to: Math.PI / 3, // 60°
+    to: Math.PI / 6,
   },
   {
     src: KimUU,
-    from: Math.PI / 3, // 60°
-    to: (2/3) * Math.PI, // 120°
+    from: Math.PI / 6,
+    to: (5 * Math.PI) / 6,
   },
   {
     src: KimRR,
-    from: (2/3) * Math.PI, // 120°
-    to: (7/6) * Math.PI, // 210°
+    from: (5 * Math.PI) / 6,
+    to: (9 * Math.PI) / 8
   },
   {
     src: KimDR,
-    from: (7/6) * Math.PI, // 210°
-    to: (4/3) * Math.PI, // 240°
+    from: (9 * Math.PI) / 8,
+    to: (11 * Math.PI) / 8
   },
   {
     src: KimDD,
-    from: (4/3) * Math.PI, // 240°
-    to: (5/3) * Math.PI, // 300°
+    from: (11 * Math.PI) / 8,
+    to: (13 * Math.PI) / 8
   },
   {
     src: KimDL,
-    from: (5/3) * Math.PI, // 300°
-    to: (11/6) * Math.PI, // 330°
+    from: (13 * Math.PI) / 8,
+    to: (15 * Math.PI) / 8
   },
   {
     src: KimLL,
-    from: (11/6) * Math.PI, // 330°
-    to: 2 * Math.PI, // 360°
+    from: (15 * Math.PI) / 8,
+    to: 2 * Math.PI
   }
 ]
 
@@ -74,7 +74,7 @@ function Kim() {
       const angle = Math.atan2(clientY - centerY, clientX - centerX) + Math.PI;
       const distance = Math.sqrt((clientX - centerX) ** 2 + (clientY - centerY) ** 2);
 
-      if (distance < 94 / 2) {
+      if (distance < 94 / 3) {
         ref.current.src = KimC;
         return;
       }

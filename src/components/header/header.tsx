@@ -1,7 +1,7 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useMemo } from "react";
 import { X, Minus } from "lucide-react";
-import styles from "./styles.module.css";
+import styles from "./header.module.css";
 import { useTranslation } from "react-i18next";
 
 function Header() {

@@ -28,22 +28,5 @@
 }
 
 .toast button {
-  @apply text-limbus-500;
-}
-
-.toast button:hover {
-  @apply text-limbus-500;
-}
-
-.toast button:hover {
-  filter: drop-shadow(0 0 2px var(--color-limbus-300));
-  transition: filter .3s ease;
-}
-
-.toast button:hover svg {
-  @apply text-limbus-300 transition-colors duration-300;
-}
-
-.toast button:active svg {
-  @apply text-limbus-100 transition-colors duration-300;
+  @apply btn;
 }

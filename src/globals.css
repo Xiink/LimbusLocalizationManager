@@ -34,14 +34,39 @@
   --color-danger:rgb(207, 55, 35);
 }
 
-@layer utilities {
-  .no-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  
-  .no-scrollbar::-webkit-scrollbar {
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@utility lnk {
+  @apply 
+    text-limbus-500 hover:text-limbus-400 active:text-limbus-300 
+    transition-colors duration-300 
+    cursor-pointer
+  ;
+}
+
+@utility btn {
+  @apply 
+    text-limbus-500 hover:text-limbus-300 active:text-limbus-100
+    cursor-pointer select-none;
+
+  transition: 
+    color 300ms ease,
+    filter 300ms ease;
+
+  &:hover {
+    filter: drop-shadow(0 0 2px var(--color-limbus-300));
+  }
+}
+
+@utility btn-lg {
+  &:hover {
+    filter: drop-shadow(0 0 4px var(--color-limbus-300));
   }
 }
 
