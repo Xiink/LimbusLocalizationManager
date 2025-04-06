@@ -55,14 +55,16 @@ function Actions({ localization }: ActionsProps) {
         )}
       </div>
 
-      {isIdle && installedVersion && installedVersion !== localization.version && (
-        <div
-          className={styles.updates}
-          title={`Update available: ${installedVersion} → ${localization.version}`}
-        >
-          {installedVersion} → {localization.version}
-        </div>
-      )}
+      {isIdle &&
+        installedVersion &&
+        installedVersion !== localization.version && (
+          <div
+            className={styles.updates}
+            title={`Update available: ${installedVersion} → ${localization.version}`}
+          >
+            {installedVersion} → {localization.version}
+          </div>
+        )}
     </div>
   );
 

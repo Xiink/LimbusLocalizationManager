@@ -315,7 +315,10 @@ pub async fn uninstall_localization(
 pub async fn get_latest_version() -> Result<String, anyhow::Error> {
     let client = Client::new();
     let response = client
-        .get(&format!("https://api.github.com/repos/{}/releases/latest", REPO_NAME))
+        .get(&format!(
+            "https://api.github.com/repos/{}/releases/latest",
+            REPO_NAME
+        ))
         .send()
         .await
         .with_context(|| format!("Failed to get latest version"))?;

@@ -1,8 +1,8 @@
 import { default as MarkdownComponent } from "react-markdown";
 
-function LinkRenderer(props: React.ComponentPropsWithoutRef<'a'>) {
+function LinkRenderer(props: React.ComponentPropsWithoutRef<"a">) {
   const { children, ...rest } = props;
-  
+
   return (
     <a {...rest} target="_blank" rel="noopener noreferrer">
       {children}

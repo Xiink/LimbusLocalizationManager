@@ -102,9 +102,7 @@ type LocalizationLocks = DashMap<(String, std::path::PathBuf), Mutex<()>>;
 
 #[tauri::command]
 async fn get_latest_version() -> Result<String, String> {
-    utils::get_latest_version()
-        .await
-        .map_err(|e| e.to_string())
+    utils::get_latest_version().await.map_err(|e| e.to_string())
 }
 
 #[tauri::command]

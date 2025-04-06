@@ -23,7 +23,7 @@ function Page() {
                 href={`${import.meta.env.VITE_APP_REPO_URL}/releases/latest`}
                 target="_blank"
                 rel="noopener noreferrer"
-            >
+              >
                 {t("home.updateAvailable")}
               </a>
             )}

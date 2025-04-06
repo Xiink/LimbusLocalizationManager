@@ -27,29 +27,29 @@ const facingDirections = [
   {
     src: KimRR,
     from: (5 * Math.PI) / 6,
-    to: (9 * Math.PI) / 8
+    to: (9 * Math.PI) / 8,
   },
   {
     src: KimDR,
     from: (9 * Math.PI) / 8,
-    to: (11 * Math.PI) / 8
+    to: (11 * Math.PI) / 8,
   },
   {
     src: KimDD,
     from: (11 * Math.PI) / 8,
-    to: (13 * Math.PI) / 8
+    to: (13 * Math.PI) / 8,
   },
   {
     src: KimDL,
     from: (13 * Math.PI) / 8,
-    to: (15 * Math.PI) / 8
+    to: (15 * Math.PI) / 8,
   },
   {
     src: KimLL,
     from: (15 * Math.PI) / 8,
-    to: 2 * Math.PI
-  }
-]
+    to: 2 * Math.PI,
+  },
+];
 
 function Kim() {
   const ref = useRef<HTMLImageElement>(null);
@@ -72,7 +72,9 @@ function Kim() {
       const centerY = top + height / 2;
 
       const angle = Math.atan2(clientY - centerY, clientX - centerX) + Math.PI;
-      const distance = Math.sqrt((clientX - centerX) ** 2 + (clientY - centerY) ** 2);
+      const distance = Math.sqrt(
+        (clientX - centerX) ** 2 + (clientY - centerY) ** 2
+      );
 
       if (distance < 94 / 3) {
         ref.current.src = KimC;
@@ -97,7 +99,8 @@ function Kim() {
   }
 
   return (
-    <img 
+    <img
+      role="button"
       src={KimC}
       className={styles.kim}
       onClick={handleClick}

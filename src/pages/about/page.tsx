@@ -18,7 +18,7 @@ function Page() {
         <h2 className="text-lg">{t("about.links")}</h2>
         <ul className={styles.list}>
           <li>
-            <a 
+            <a
               target="_blank"
               rel="noopener noreferrer"
               href={import.meta.env.VITE_APP_REPO_URL}
