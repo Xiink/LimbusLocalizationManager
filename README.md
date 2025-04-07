@@ -15,7 +15,7 @@ A simple tool for managing Limbus Company localizations
 [English](./README.md) | [Русский](./docs/README.ru.md)
 </div>
 
-# Available localizations
+# Currently available
 - [**MTL**](https://github.com/kimght/LimbusCompanyRuMTL) (RU)
 
 # Installation
