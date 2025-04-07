@@ -16,6 +16,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Noto Sans TC';
+  src: url('./assets/fonts/NotoSansTC/NotoSansTC-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-limbus-50: #fbf8eb;
   --color-limbus-100: #f7edca;
@@ -136,7 +144,7 @@
 
 body {
   @apply text-base;
-  font-family: 'Lora', serif;
+  font-family: 'Lora', 'Noto Sans TC', serif;
 }
 
 *,
