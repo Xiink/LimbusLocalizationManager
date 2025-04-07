@@ -574,6 +574,21 @@ pub fn run() {
         .setup(|app| {
             let app_handle = app.handle();
 
+            use tauri::{LogicalSize, WebviewWindowBuilder, WebviewUrl};
+            let window = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
+                .title("Limbus Localization Manager")
+                .resizable(false)
+                .transparent(true)
+                .decorations(false)
+                .build()
+                .unwrap();
+
+            window.set_zoom(1.0)
+                .expect("Failed to set zoom");
+
+            window.set_size(LogicalSize::new(640.0, 480.0))
+                .expect("Failed to set size");
+
             let app_state = AppState::new(&app_handle);
 
             app.manage(Mutex::new(app_state));
