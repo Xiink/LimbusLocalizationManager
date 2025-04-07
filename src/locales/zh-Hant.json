@@ -1,0 +1,62 @@
+{
+  "title": "邊獄巴士翻譯管理器",
+  "home": {
+    "play": "更新並啟動",
+    "title": "Limbus Company 本地化工具",
+    "console": "主控台",
+    "updateAvailable": "有可用的更新！",
+    "noLocalizationsInstalled": "尚未安裝任何本地化翻譯",
+    "add": "新增本地化翻譯"
+  },
+  "settings": {
+    "interfaceLanguage": "介面語言",
+    "source": "來源",
+    "title": "設定",
+    "gameDirectory": "自訂遊戲目錄",
+    "gameDirectoryDefault": "[使用預設值]"
+  },
+  "localization": {
+    "authors": "作者",
+    "select": "選擇本地化語言",
+    "notFound": "找不到本地化語言",
+    "uninstall": "解除安裝",
+    "repair": "修復",
+    "add": "新增",
+    "installed": "已安裝 {{localization}}（{{version}}）",
+    "uninstalled": "已解除安裝 {{localization}}",
+    "repaired": "已修復 {{localization}}"
+  },
+  "localizations": {
+    "loading": "正在載入本地化語言",
+    "error": "取得本地化語言失敗！",
+    "tryAgain": "重試",
+    "changeSource": "更改來源"
+  },
+  "error": {
+    "install": "安裝 {{localization}} 失敗",
+    "setGameDirectory": "設定遊戲目錄失敗",
+    "somethingWentWrong": "發生錯誤！",
+    "updateAndPlay": "更新失敗！"
+  },
+  "log": {
+    "started": "正在檢查更新…",
+    "unknownLocalization": "發現未知的本地化語言 '{{localization}}'",
+    "upToDate": "本地化語言 '{{localization}}' 已是最新版本",
+    "updating": "正在更新本地化語言 '{{localization}}'",
+    "updateFinished": "已更新本地化語言 '{{localization}}'",
+    "startingGame": "正在啟動遊戲",
+    "finished": "遊戲已啟動",
+    "readChangeLog": "檢視更新記錄"
+  },
+  "about": {
+    "title": "關於",
+    "credits": "製作名單",
+    "developers": "開發人員",
+    "translators": "翻譯人員",
+    "links": "實用連結",
+    "source": "原始碼",
+    "issues": "支援",
+    "developer": "開發者",
+    "translator": "翻譯者"
+  }
+}
