@@ -25,7 +25,6 @@ export class StateStore {
       () => this.settings?.language,
       () => {
         if (this.settings?.language) {
-          console.log("changeLanguage", this.settings.language);
           i18n.changeLanguage(this.settings.language);
         }
       }

@@ -36,6 +36,7 @@ md-5 = "0.10.6"
 futures = "0.3.31"
 dashmap = "6.1.0"
 sysinfo = "0.34.2"
+tauri-plugin-os = "2"
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.51.0"
