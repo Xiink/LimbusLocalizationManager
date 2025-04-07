@@ -32,12 +32,12 @@ Click the `+` button to install your desired localizations. You can select multi
 ![Localizations Menu](./docs/img/localization_en.png)
 > Note: The game must be closed during the installation process
 
-Once a localization is installed, you can remove it using the `X` button. Use the `Repair` button to reinstall the latest version of a localization.
+Once a localization is installed, you can remove it using the `X` button. `Repair` button will reinstall the latest version.
 
 ## Updating localizations
 When an update is available, it will be displayed on the corresponding localization page. You can use the `Repair` button to install it immediately.
 
-But the recommended way to update is by using the `Update & Play` button on the home page. This will automatically:
+But the recommended way to update is by using the `Update & Play` button on the home page to start Limbus Company. This will automatically:
 - Check if all installed localizations are up-to-date
 - Upgrade them if necessary
 - Launch the game for you
