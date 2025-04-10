@@ -21,6 +21,6 @@ format = "new"
 localization_asset = "localize_files.zip"
 
 [[ru-mtl.fonts]]
-url = "https://github.com/kimght/LimbusFonts/releases/download/v1.5.0/merged_font.ttf"
-hash = "4ce0e62ed92b4d1844f3ee30aadece91"
+url = "https://github.com/kimght/LimbusFonts/releases/download/v1.6.0/merged_font.ttf"
+hash = "cc1f83f52bd357201db884fd5400072c"
 name = "merged_font.ttf"
