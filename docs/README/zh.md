@@ -13,15 +13,15 @@
 [![Latest Release](https://img.shields.io/github/v/release/kimght/LimbusLocalizationInstaller?style=flat-square&label=Latest%20Release&labelColor=%23707489&color=%23484f58)](../../releases/latest)
 
 **Readme language**<br>
-[English](./README.md) | [Русский](./docs/README/ru.md) | [繁體中文](./docs/README/zh.md)
+[English](/README.md) | [Русский](/docs/README/ru.md) | [繁體中文](/docs/README/zh.md)
 </div>
 
-# Currently available
+# 已支援本地化翻譯
 
 - [**MTL**](https://github.com/kimght/LimbusCompanyRuMTL) (RU)
 - [**LTM**](https://github.com/LimbusTraditionalMandarin/storyline) (ZH)
 
-# Installation
+# 安裝方法
 
 1. 請根據您的作業系統從 [releases](https://github.com/kimght/LimbusLocalizationManager/releases) 下載最新版本的安裝程式。
    - Windows系統的使用者: `LimbusLocalizationManager_Setup_x.x.x.exe`
@@ -35,7 +35,8 @@
 
 點擊 `+` 來安裝您所選擇的本地化翻譯，您可以同時安裝複數的翻譯並能夠在遊戲中進行切換。
 
-![Localizations Menu](./docs/img/localization_en.png)
+![Localizations Menu](https://github.com/user-attachments/assets/4d8a503a-a3de-403d-a735-6c05f318aabe)
+
 > 注意: 在安裝的過程中必須關閉遊戲
 
 安裝本地化翻譯後您可以透過 `X` 按鈕來解除安裝。 `修復` 按鈕則會重新安裝最新版本的本地化翻譯。
@@ -44,13 +45,13 @@
 
 當本地化翻譯出現可用的更新時，它將顯示在對應的本地化翻譯頁面上，您可以使用 `修復` 按鈕來進行安裝
 
-但我們更推薦使用主頁面上 `更新並啟動` 來啟動 Limbus Company，並自動:
+但我們更推薦使用主頁面上 `更新並啟動` 來啟動 Limbus Company，這將自動:
 
 - 檢查已安裝的本地化翻譯是否都已更新至最新版
-- 當有需要時自動進行更新
-- 為您自動啟動遊戲
+- 自動進行更新
+- 自動為您啟動遊戲
 
-![Update and Play](./docs/img/update_and_play_en.png)
+![Update and Play](https://github.com/user-attachments/assets/9db27e59-98ff-4771-8cdd-6f6975485df5)
 
 # Contributors
 
